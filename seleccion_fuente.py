@@ -2,6 +2,7 @@ import time
 import threading as th
 import RPi.GPIO as GPIO
 
+
 def pesoPonderado(fuente,valor):
     """
     Función pondera el valor de las mediciones de las entradas.
@@ -31,7 +32,7 @@ def pesoPonderado(fuente,valor):
         return float(valor)*5.7
     else :
         return float(valor)*0.4
-    
+      
 
 def pasaPanel(instruccion):
     """
@@ -41,14 +42,16 @@ def pasaPanel(instruccion):
         instruccion (int): instrucción de apagar/prender (0/1)
     """
     GPIO.setmode(GPIO.BCM)
-    GPIO.setup(9, GPIO.OUT)
+    GPIO.setup(23, GPIO.OUT)
     if instruccion == 0:
-        GPIO.output(9, GPIO.LOW)
+        GPIO.output(23, GPIO.LOW)
     elif instruccion == 1:
-        GPIO.output(9, GPIO.HIGH)
+        GPIO.output(23, GPIO.HIGH)
     else:
         print("Instruccion no encontrada")
-        
+    GPIO.cleanup()
+    
+    
 def pasaAero(instruccion):
     """
     Función que enciende o apaga la fuente (Aerogenerador) según sea necesario
@@ -57,14 +60,16 @@ def pasaAero(instruccion):
         instruccion (int): instrucción de apagar/prender (0/1)
     """
     GPIO.setmode(GPIO.BCM)
-    GPIO.setup(10, GPIO.OUT)
+    GPIO.setup(24, GPIO.OUT)
     if instruccion == 0:
-        GPIO.output(10, GPIO.LOW)
+        GPIO.output(24, GPIO.LOW)
     elif instruccion == 1:
-        GPIO.output(10, GPIO.HIGH)
+        GPIO.output(24, GPIO.HIGH)
     else:
         print("Instruccion no encontrada")
-        
+    GPIO.cleanup()
+  
+
 def pasaCfe(instruccion):
     """
     Función que enciende o apaga la fuente (Cfe) según sea necesario
@@ -73,35 +78,36 @@ def pasaCfe(instruccion):
         instruccion (int): instrucción de apagar/prender (0/1)
     """
     GPIO.setmode(GPIO.BCM)
-    GPIO.setup(11, GPIO.OUT)
+    GPIO.setup(22, GPIO.OUT)
     if instruccion == 0:
-        GPIO.output(11, GPIO.LOW)
+        GPIO.output(22, GPIO.LOW)
     elif instruccion == 1:
-        GPIO.output(11, GPIO.HIGH)
+        GPIO.output(22, GPIO.HIGH)
     else:
         print("Instruccion no encontrada")
-        
-    
+    GPIO.cleanup()
+     
+   
 GPIO.setmode(GPIO.BCM)
-GPIO.setup(9, GPIO.OUT)
-GPIO.setup(10, GPIO.OUT)
-GPIO.setup(11, GPIO.OUT)
-Panel = {"nombre":"PanelSolar","puerto":9,"estado":False, "valor":0}
-Aero = {"nombre":"Aerogenerador","puerto":10, "estado":False,"valor":1}
-Cfe = {"nombre":"CFE","puerto":11,"estado":False, "valor":3}
+GPIO.setup(23, GPIO.OUT)
+GPIO.setup(24, GPIO.OUT)
+GPIO.setup(22, GPIO.OUT)
+Panel = {"nombre":"PanelSolar","puerto":23,"estado":False, "valor":0}
+Aero = {"nombre":"Aerogenerador","puerto":24, "estado":False,"valor":1}
+Cfe = {"nombre":"CFE","puerto":22,"estado":False, "valor":3}
 try:
     voltajePanel = input("Ingresa el voltaje del Panel Solar: ")
     voltajeAero = input("Ingresa el voltaje del Aerogenerador: ")
     voltajeCfe = input("Ingresa el voltaje de CFE: ")
-
+    #Ponderación de los valores obtenidos
     ponderadoPanel = pesoPonderado(Panel.get("valor"), voltajePanel)
     ponderadoAero = pesoPonderado(Aero.get("valor"), voltajeAero)
     ponderadoCfe =  pesoPonderado(Cfe.get("valor"), voltajeCfe)
-    
+    #Creacion de un arreglo que se acomoda
     arreglo=[ponderadoCfe,ponderadoAero,ponderadoPanel]
     arreglo.sort(reverse=True)
     print(arreglo)
-    
+    #Selector
     if arreglo[0] == ponderadoPanel:
         pasaPanel(1)
     elif arreglo[0] == ponderadoAero:
@@ -113,10 +119,8 @@ try:
         pasaAero(0)
         pasaPanel(0)
     time.sleep(10)
-    
 except:
     print("error")
-    
 finally:
     GPIO.cleanup()
     pasaCfe(0)
