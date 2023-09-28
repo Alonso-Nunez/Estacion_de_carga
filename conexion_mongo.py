@@ -10,7 +10,7 @@ MONGO_BD = "Prueba_cargador"
 MONGO_COLECCION = "Bateria"  # "Entradas""Salida"
 
 
-def conectar(base_datos, bd_coleccion):
+def conectar_db(base_datos, bd_coleccion):
     cliente = pymongo.MongoClient(MONGO_URL, serverSelectionTimeoutMS=MONGO_TIMEOUT)
     base = cliente[base_datos]
     coleccion = base[bd_coleccion]
