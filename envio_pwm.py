@@ -1,4 +1,4 @@
-import RPi.GPIO
+import RPi.GPIO as GPIO
 # inicialización del puerto a usar
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(25, GPIO.OUT)

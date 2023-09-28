@@ -40,15 +40,15 @@ def pasa_panel(instruccion):
     Args:
         instruccion (int): instrucción de apagar/prender (0/1)
     """
-    GPIO.setmode(GPIO.BCM)
-    GPIO.setup(23, GPIO.OUT)
+    #GPIO.setmode(GPIO.BCM)
+    #GPIO.setup(23, GPIO.OUT)
     if instruccion == 0:
         GPIO.output(23, GPIO.LOW)
     elif instruccion == 1:
         GPIO.output(23, GPIO.HIGH)
     else:
         print("Instruccion no encontrada")
-    GPIO.cleanup()
+    #GPIO.cleanup()
 
     
 def pasa_aero(instruccion):
@@ -58,15 +58,15 @@ def pasa_aero(instruccion):
     Args:
         instruccion (int): instrucción de apagar/prender (0/1)
     """
-    GPIO.setmode(GPIO.BCM)
-    GPIO.setup(24, GPIO.OUT)
+    #GPIO.setmode(GPIO.BCM)
+    #GPIO.setup(24, GPIO.OUT)
     if instruccion == 0:
         GPIO.output(24, GPIO.LOW)
     elif instruccion == 1:
         GPIO.output(24, GPIO.HIGH)
     else:
         print("Instruccion no encontrada")
-    GPIO.cleanup()
+    #GPIO.cleanup()
   
 
 def pasa_cfe(instruccion):
@@ -76,22 +76,21 @@ def pasa_cfe(instruccion):
     Args:
         instruccion (int): instrucción de apagar/prender (0/1)
     """
-    GPIO.setmode(GPIO.BCM)
-    GPIO.setup(22, GPIO.OUT)
+    #GPIO.setmode(GPIO.BCM)
+    #GPIO.setup(22, GPIO.OUT)
     if instruccion == 0:
         GPIO.output(22, GPIO.LOW)
     elif instruccion == 1:
         GPIO.output(22, GPIO.HIGH)
     else:
         print("Instruccion no encontrada")
-    GPIO.cleanup()
+    #GPIO.cleanup()
      
    
 GPIO.setmode(GPIO.BCM)
+GPIO.setup(22, GPIO.OUT)
 GPIO.setup(23, GPIO.OUT)
 GPIO.setup(24, GPIO.OUT)
-GPIO.setup(22, GPIO.OUT)
-
 try:
     voltajePanel = input("Ingresa el voltaje del Panel Solar: ")
     voltajeAero = input("Ingresa el voltaje del Aerogenerador: ")
@@ -117,10 +116,10 @@ try:
         pasa_panel(0)
     time.sleep(10)  
 
-except RuntimeError:
+except:
     print("error")
 finally:
-    GPIO.cleanup()
     pasa_cfe(0)
     pasa_aero(0)
     pasa_panel(0)
+    GPIO.cleanup()
