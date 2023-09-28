@@ -1,9 +1,8 @@
 import time
-import threading as th
 import RPi.GPIO as GPIO
 
 
-def pesoPonderado(fuente,valor):
+def peso_ponderado(fuente,valor):
     """
     Función pondera el valor de las mediciones de las entradas.
 
@@ -34,7 +33,7 @@ def pesoPonderado(fuente,valor):
         return float(valor)*0.4
       
 
-def pasaPanel(instruccion):
+def pasa_panel(instruccion):
     """
     Función que enciende o apaga la fuente (Panel solar) según sea necesario
 
@@ -50,9 +49,9 @@ def pasaPanel(instruccion):
     else:
         print("Instruccion no encontrada")
     GPIO.cleanup()
+
     
-    
-def pasaAero(instruccion):
+def pasa_aero(instruccion):
     """
     Función que enciende o apaga la fuente (Aerogenerador) según sea necesario
 
@@ -70,7 +69,7 @@ def pasaAero(instruccion):
     GPIO.cleanup()
   
 
-def pasaCfe(instruccion):
+def pasa_cfe(instruccion):
     """
     Función que enciende o apaga la fuente (Cfe) según sea necesario
 
@@ -92,45 +91,36 @@ GPIO.setmode(GPIO.BCM)
 GPIO.setup(23, GPIO.OUT)
 GPIO.setup(24, GPIO.OUT)
 GPIO.setup(22, GPIO.OUT)
-Panel = {"nombre":"PanelSolar","puerto":23,"estado":False, "valor":0}
-Aero = {"nombre":"Aerogenerador","puerto":24, "estado":False,"valor":1}
-Cfe = {"nombre":"CFE","puerto":22,"estado":False, "valor":3}
+
 try:
     voltajePanel = input("Ingresa el voltaje del Panel Solar: ")
     voltajeAero = input("Ingresa el voltaje del Aerogenerador: ")
     voltajeCfe = input("Ingresa el voltaje de CFE: ")
     #Ponderación de los valores obtenidos
-    ponderadoPanel = pesoPonderado(Panel.get("valor"), voltajePanel)
-    ponderadoAero = pesoPonderado(Aero.get("valor"), voltajeAero)
-    ponderadoCfe =  pesoPonderado(Cfe.get("valor"), voltajeCfe)
+    ponderadoPanel = peso_ponderado(0, voltajePanel)
+    ponderadoAero = peso_ponderado(1, voltajeAero)
+    ponderadoCfe =  peso_ponderado(3, voltajeCfe)
     #Creacion de un arreglo que se acomoda
     arreglo=[ponderadoCfe,ponderadoAero,ponderadoPanel]
     arreglo.sort(reverse=True)
     print(arreglo)
     #Selector
     if arreglo[0] == ponderadoPanel:
-        pasaPanel(1)
+        pasa_panel(1)
     elif arreglo[0] == ponderadoAero:
-        pasaAero(1)
+        pasa_aero(1)
     elif arreglo[0] == ponderadoCfe:
-        pasaCfe(1)
+        pasa_cfe(1)
     else :
-        pasaCfe(0)
-        pasaAero(0)
-        pasaPanel(0)
-    time.sleep(10)
-except:
+        pasa_cfe(0)
+        pasa_aero(0)
+        pasa_panel(0)
+    time.sleep(10)  
+
+except RuntimeError:
     print("error")
 finally:
     GPIO.cleanup()
-    pasaCfe(0)
-    pasaAero(0)
-    pasaPanel(0)
-
-
-
-
-
-
-
-        
+    pasa_cfe(0)
+    pasa_aero(0)
+    pasa_panel(0)
