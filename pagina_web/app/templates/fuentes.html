@@ -1,0 +1,45 @@
+{% block head %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+{% endblock %}
+
+{% block content %}
+<canvas id="myChart" style="inline-size:700%;max-inline-size:1000px;inset-inline-start:50%"></canvas>
+    <div class="container-fluid">
+        <div id="container">
+        </div>
+    </div>
+
+<script type="application/javascript">
+        const xValues = ["Panel solar", "Eolica", "Electrica"];
+        const yValues = [55, 49, 44];
+        const barColors = [
+          "#b91d47",
+          "#00aba9",
+          "#2b5797",
+          "#e8c3b9",
+          "#1e7145"
+        ];
+        
+        new Chart("myChart", {
+          type: "pie",
+          data: {
+            labels: xValues,
+            datasets: [{
+              backgroundColor: barColors,
+              data: yValues
+            }]
+          },
+          options: {
+            title: {
+              display: true,
+            }
+          }
+        });
+        </script>
+        
+{% endblock %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Graphics energy end-->
