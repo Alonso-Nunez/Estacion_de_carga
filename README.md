@@ -28,3 +28,11 @@ djongo
 ```
 pip install djongo
 ```
+
+Instalar env para funcion de vistas
+``` 
+pip install django-environ
+```
+
+
+
