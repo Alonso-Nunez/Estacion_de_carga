@@ -40,15 +40,12 @@ def pasa_panel(instruccion):
     Args:
         instruccion (int): instrucción de apagar/prender (0/1)
     """
-    #GPIO.setmode(GPIO.BCM)
-    #GPIO.setup(23, GPIO.OUT)
     if instruccion == 0:
         GPIO.output(23, GPIO.LOW)
     elif instruccion == 1:
         GPIO.output(23, GPIO.HIGH)
     else:
         print("Instruccion no encontrada")
-    #GPIO.cleanup()
 
     
 def pasa_aero(instruccion):
@@ -58,15 +55,12 @@ def pasa_aero(instruccion):
     Args:
         instruccion (int): instrucción de apagar/prender (0/1)
     """
-    #GPIO.setmode(GPIO.BCM)
-    #GPIO.setup(24, GPIO.OUT)
     if instruccion == 0:
         GPIO.output(24, GPIO.LOW)
     elif instruccion == 1:
         GPIO.output(24, GPIO.HIGH)
     else:
         print("Instruccion no encontrada")
-    #GPIO.cleanup()
   
 
 def pasa_cfe(instruccion):
@@ -76,15 +70,13 @@ def pasa_cfe(instruccion):
     Args:
         instruccion (int): instrucción de apagar/prender (0/1)
     """
-    #GPIO.setmode(GPIO.BCM)
-    #GPIO.setup(22, GPIO.OUT)
     if instruccion == 0:
         GPIO.output(22, GPIO.LOW)
     elif instruccion == 1:
         GPIO.output(22, GPIO.HIGH)
     else:
         print("Instruccion no encontrada")
-    #GPIO.cleanup()
+
      
    
 GPIO.setmode(GPIO.BCM)
