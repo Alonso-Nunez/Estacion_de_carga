@@ -1,6 +1,7 @@
 import serial
+import time
 
-SERIAL_PORT = "/dev/ttyS0" # "/dev/ttyAMA0" o "/dev/ttyS0"
+SERIAL_PORT ="/dev/ttyAMA0" #"/dev/ttyS0"  "/dev/ttyAMA0" o "/dev/ttyS0"
 BYTES_LECTURA = 2
 
 def crear_conexion_serial():
@@ -41,9 +42,11 @@ def leer_valores(conexion):
     Returns:
         leectura (byte): bytes leidos del puerto serial
     """
-    return conexion.read(BYTES_LECTURA)
+    #return conexion.read(BYTES_LECTURA)
+    return conexion.readLine()
 
-def cerrar_conexion(conexion):
+
+def cerrar_conexion_serial(conexion):
     """
     Función que cierra la conexion del puerto serial
 
@@ -63,10 +66,11 @@ def cerrar_conexion(conexion):
 #port.close()
 try:
     con=crear_conexion_serial()
-    envio_valores(con,"Hola mundo")
+    envio_valores(con,"Hola mundo desde rasp")
     lectura = leer_valores(con)
     print(lectura,type(lectura))
-    cerrar_conexion(con)
+    cerrar_conexion_serial(con)
+    
 except SerialException:
     print("Ocurrio un error en el envio o lectura de datos")
 except SerialTimeoutExceptio:
