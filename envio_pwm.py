@@ -1,20 +1,55 @@
 import RPi.GPIO as GPIO
-# inicialización del puerto a usar
+
+
+# inicialización del puerto GPIO a usar
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(25, GPIO.OUT)
 
-# creación del objeto pwm
-pwm = GPIO.PWM(25, 500)  # pin, frecuencia de trabajo
-pwm.start(0)  # duty cicle inicial de 0, se puede poner cualquier valor
 
+def iniciar_pwm(f_trabajo,dc_inicial):
+    """_summary_
+
+    Args:
+        f_trabajo (int): frecuencia de trabajo del pwm
+        dc_inicial (int): DutyCycle inicial 
+
+    Returns:
+        pwm object: variable de tipo objeto con la información del pwm creado
+    """
+    pwm = GPIO.PWM(25, f_trabajo)
+    pwm.start(dc_inicial)
+    return pwm
+
+def parar_pwm(pwm):
+    """
+    Detiene el pwm y lanza alerta
+
+    Args:
+        pwm (objet): objeto pwm a detener
+    """
+    pwm.stop()
+    print("Fin de la carga")
+
+def actualizar_dc(pwm,dc_nuevo):
+    """
+    Actualiza el DutyCyle del pwm seleccionado
+
+    Args:
+        pwm (object): Objeto pwm a actualizar
+        dc_nuevo (int): DutyCycle a actualizar
+    """
+    pwm.ChangeDutyCycle(int(dc_nuevo))
+    print("Ducty Cycle actualizado")
+
+
+bateria_pwm = iniciar_pwm(500,100)
 continuar = True
 while continuar:
     dato = input("Digitel el nuevo Duty Cicle: ")
     if dato == "fin":
         continuar = False
     else:
-        pwm.ChangeDutyCycle(int(dato))
+        actualizar_dc(bateria_pwm,dato)
 
-pwm.stop()
+parar_pwm(bateria_pwm)
 GPIO.cleanup()
-print("Fin de la carga")

@@ -1,30 +1,41 @@
 import RPi.GPIO as GPIO
 import tkinter as tk
 
+# Inicialización  de los puertos GPIO a usar
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(5,GPIO.OUT)
+GPIO.setup(6,GPIO.OUT)
 
 
 def io_inversor(instruccion):
-    #GPIO.setmode(GPIO.BCM)
-    #GPIO.setup(31,GPIO.OUT)
+    """
+    Función que enciende o apaga el switch del inversor
+
+    Args:
+        instruccion (int): recibe un 1 para encender o un 0 para apagar
+    """
     if instruccion == 0:
         GPIO.output(6,GPIO.LOW)
     elif instruccion == 1:
         GPIO.output(6,GPIO.HIGH)
     else:
         print("Instrucción no encontrada")
-    #GPIO.cleanup()
 
 
 def io_bateria(instruccion):
-    #GPIO.setmode(GPIO.BCM)
-    #GPIO.setup(29,GPIO.OUT)
+    """
+    Función que enciende o apaga el switch de la bateria
+
+    Args:
+        instruccion (int): recibe un 1 para encerder o un 0 para apagar
+    """
     if instruccion == 0:
         GPIO.output(5,GPIO.LOW)
     elif instruccion == 1:
         GPIO.output(5,GPIO.HIGH)
     else:
         print("Instrucción no encontrada")
-    #GPIO.cleanup()
+
 
 
 def color_inversor():
@@ -55,9 +66,7 @@ def color_bateria():
     
 
 
-GPIO.setmode(GPIO.BCM)
-GPIO.setup(5,GPIO.OUT)
-GPIO.setup(6,GPIO.OUT)
+
 w = tk.Tk()
 w.title("Switches")
 #Frame

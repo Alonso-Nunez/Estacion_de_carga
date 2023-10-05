@@ -2,6 +2,13 @@ import time
 import RPi.GPIO as GPIO
 
 
+# Iniciaclización de los puertos GPIO a usar
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(22, GPIO.OUT)
+GPIO.setup(23, GPIO.OUT)
+GPIO.setup(24, GPIO.OUT)
+
+
 def peso_ponderado(fuente,valor):
     """
     Función pondera el valor de las mediciones de las entradas.
@@ -79,10 +86,7 @@ def pasa_cfe(instruccion):
 
      
    
-GPIO.setmode(GPIO.BCM)
-GPIO.setup(22, GPIO.OUT)
-GPIO.setup(23, GPIO.OUT)
-GPIO.setup(24, GPIO.OUT)
+
 try:
     voltajePanel = input("Ingresa el voltaje del Panel Solar: ")
     voltajeAero = input("Ingresa el voltaje del Aerogenerador: ")
