@@ -19,13 +19,10 @@ GPIO.setup(24, GPIO.OUT)
 GPIO.setup(25, GPIO.OUT)
 '''
 # Constantes
-MONGO_BD = "Prueba_cargador"
-MONGO_COLECCION = "Bateria" 
 MENSAJE_PIC = ["vol_Panel", "vol_Aero", "vol_Bat", "vol_CFE","vol_Inv", "int_Ent",  "int_Inv", "tem_Bat"]
 lecturaPIC = ["", "", "", "", "", "", "", ""]
 
 # Conexiones externas
-conDB, coleccion, base = conectar_db(MONGO_BD,MONGO_COLECCION)
 conSerial = crear_conexion_serial()
 
 def intercambio_datos_PIC(mensaje):
@@ -37,7 +34,7 @@ def intercambio_datos_PIC(mensaje):
         return False
 
 def guardar_datos_db():
-    insertar_datos(conDB)
+    insertar_datos(lecturaPIC)
     time.sleep(1)
 
 def paso_fuentes():
@@ -71,7 +68,6 @@ def principal():
     except RuntimeError as error:
         print (error)
     finally:
-        desconectar_db(conDB)
         cerrar_conexion_serial(conSerial)
         continuarEntradas = apagar_fuentes()
 
