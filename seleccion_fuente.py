@@ -113,14 +113,18 @@ def activar_fuente(arreglo,pP ,pA ,pC):
     """
     if arreglo[0] == float(pP):
         pasa_panel(1)
+        return "Panel"
     elif arreglo[0] == float(pA):
         pasa_aero(1)
+        return "Aero"
     elif arreglo[0] == float(pC):
         pasa_cfe(1)
+        return "CFE"
     else :
         pasa_cfe(0)
         pasa_aero(0)
         pasa_panel(0)
+        return "Bateria"
 
 def apagar_fuentes():
     """
