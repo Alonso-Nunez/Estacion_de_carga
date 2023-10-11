@@ -20,6 +20,7 @@ GPIO.setup(25, GPIO.OUT)
 '''
 # Constante
 MENSAJE_PIC = ["vol_Panel", "vol_Aero", "vol_Bat", "vol_CFE","vol_Inv", "int_Ent",  "int_Inv", "tem_Bat"]
+BATERIA_CARGADA = 13
 lecturaPIC = ["", "", "", "", "", "", "", ""]
 
 # Conexiones externas
@@ -62,63 +63,75 @@ def paso_fuentes():
                         lecturaPIC[0],
                         lecturaPIC[1],
                         lecturaPIC[3]) == 0:
-            if cargarBateria == False:
+            if cargarAuto:
                 io_bateria(1)
         else:
             io_bateria(0)
         time.sleep(60)
 
+def estado_cargas():
+    """Función que asigna el estado de las cargas del auto y bateria
+    """
+    global cargarAuto
+    global cargarBateria
+    global envioDB
+    cargarAuto = True # Remplazar con función ¿Auto cargando?
+    cargarBateria = not cargarAuto # Reemplazar con función de ¿Cargar bateria?
+    envioDB = cargarAuto and cargarBateria
+    time.sleep(10)
 
 def principal():
     try:
+        hiloCargas = thr.Thread(target=estado_cargas)
+        hiloCargas.start()
         # Variables globales para control de hilos
         global continuarEntradas
-        global cargar
-        global cargarBateria
         global alimentacion
-        global envioDB
 
         while True:
-            cargar = True # Cambiar cuando sea posible
-            cargarBateria = not cargar
-            envioDB = cargar and cargarBateria
 
-            if cargar:
+            if cargarAuto:
                 io_inversor(1)
-                while cargar:
+                alimentacion = False
+                time.sleep(60)
+                hiloPasoFuente = thr.Thread(target=paso_fuentes)
+                hiloPasoFuente.start()
+                io_bateria(0)
+                while cargarAuto:
                     for mensaje in MENSAJE_PIC:
                         while intercambio_datos_PIC(mensaje)==False:
                             intercambio_datos_PIC(mensaje)
                     guardar_datos_db()
-                    hiloPasoFuente = thr.Thread(target=paso_fuentes)
-                    hiloPasoFuente.start()
 
             elif cargarBateria:
                 io_inversor(0)
                 io_bateria(1)
-                while cargarBateria and cargar == False:
+                alimentacion = False
+                time.sleep(60)
+                hiloPasoFuente = thr.Thread(target=paso_fuentes)
+                hiloPasoFuente.start()
+                while cargarBateria and cargarAuto == False:
                     for mensaje in MENSAJE_PIC:
                         while intercambio_datos_PIC(mensaje)==False:
                             intercambio_datos_PIC(mensaje)
                     guardar_datos_db()
-                    hiloPasoFuente = thr.Thread(target=paso_fuentes)
-                    hiloPasoFuente.start()
                     pwmBateria = iniciar_pwm(1000,100)
-                    if float(lecturaPIC[2]) >= 12:
+                    if float(lecturaPIC[2]) >= BATERIA_CARGADA:
                         parar_pwm(pwmBateria)
                         cargarBateria = False
                     io_bateria(1)
 
-            elif cargarBateria == False and cargar == False:
+            elif cargarBateria == False and cargarAuto == False:
                 envioDB = True
                 io_bateria(0)
                 io_inversor(0)
+                alimentacion = False
                 while envioDB:
                     for mensaje in MENSAJE_PIC:
                         while intercambio_datos_PIC(mensaje)==False:
                             intercambio_datos_PIC(mensaje)
                     guardar_datos_db()
-                    envioDB = cargar and cargarBateria
+                    envioDB = cargarAuto and cargarBateria
 
     except Exception as error:
         print (error)
@@ -126,7 +139,7 @@ def principal():
     finally:
         cerrar_conexion_serial(conSerial)
         continuarEntradas = apagar_fuentes()
-        cargar = False
+        cargarAuto = False
         cargarBateria = False
         alimentacion = False
         parar_pwm(pwmBateria)
