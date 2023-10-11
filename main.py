@@ -92,6 +92,7 @@ def principal():
                     guardar_datos_db()
                     hiloPasoFuente = thr.Thread(target=paso_fuentes)
                     hiloPasoFuente.start()
+
             elif cargarBateria:
                 io_inversor(0)
                 io_bateria(1)
@@ -107,11 +108,11 @@ def principal():
                         parar_pwm(pwmBateria)
                         cargarBateria = False
                     io_bateria(1)
+
             elif cargarBateria == False and cargar == False:
                 envioDB = True
                 io_bateria(0)
                 io_inversor(0)
-
                 while envioDB:
                     for mensaje in MENSAJE_PIC:
                         while intercambio_datos_PIC(mensaje)==False:
@@ -121,6 +122,7 @@ def principal():
 
     except Exception as error:
         print (error)
+        
     finally:
         cerrar_conexion_serial(conSerial)
         continuarEntradas = apagar_fuentes()
