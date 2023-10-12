@@ -83,6 +83,7 @@ def estado_cargas():
 def principal():
     try:
         hiloCargas = thr.Thread(target=estado_cargas)
+        hiloCargas.setDaemon()
         hiloCargas.start()
         # Variables globales para control de hilos
         global continuarEntradas
@@ -95,6 +96,7 @@ def principal():
                 alimentacion = False
                 time.sleep(60)
                 hiloPasoFuente = thr.Thread(target=paso_fuentes)
+                hiloPasoFuente.setDaemon()
                 hiloPasoFuente.start()
                 io_bateria(0)
                 while cargarAuto:
@@ -109,6 +111,7 @@ def principal():
                 alimentacion = False
                 time.sleep(60)
                 hiloPasoFuente = thr.Thread(target=paso_fuentes)
+                hiloPasoFuente.setDaemon()
                 hiloPasoFuente.start()
                 while cargarBateria and cargarAuto == False:
                     for mensaje in MENSAJE_PIC:
