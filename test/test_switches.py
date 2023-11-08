@@ -25,9 +25,6 @@ def color_bateria():
         btn2.configure(bg="green")
         io_bateria(1)
         color_ba = 1
-    
-    
-
 
 
 w = tk.Tk()
@@ -45,5 +42,4 @@ btn2 = tk.Button(fm, text = "Bateria", command=color_bateria, height= 2, width= 
 btn2.grid(row= 2, column= 0)
 print(color_in,color_ba)
 w.mainloop()
-GPIO.cleanup()
 print("Fin de programa")

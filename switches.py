@@ -34,3 +34,5 @@ def io_bateria(instruccion):
         GPIO.output(5,GPIO.HIGH)
     else:
         print("Instrucción no encontrada")
+
+GPIO.cleanup()
