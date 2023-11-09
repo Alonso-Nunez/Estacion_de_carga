@@ -33,6 +33,10 @@ Instalar env para funcion de vistas
 ``` 
 pip install django-environ
 ```
+Instalar pymongo paara extrare datos de MongoDB
+``` 
+pip install pymongo
+```
 
 
 
