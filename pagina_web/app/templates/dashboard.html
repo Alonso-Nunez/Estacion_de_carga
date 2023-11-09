@@ -90,68 +90,121 @@
             </div>
                     </div>
                 
-{% block head %}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
-{% endblock %}
 
-{% block content %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+
+
+
 <canvas id="myChart" style="inline-size:700%;max-inline-size:1000px;inset-inline-start:50%"></canvas>
     <div class="container-fluid">
         <div id="container">
         </div>
     </div>
 
-<script type="application/javascript">
-        const xValues = ["Panel solar", "Eolica", "Electrica"];
-        const yValues = [55, 49, 44];
-        const barColors = [
-          "#b91d47",
-          "#00aba9",
-          "#2b5797",
-          "#e8c3b9",
-          "#1e7145"
-        ];
-        
-        new Chart("myChart", {
-          type: "pie",
-          data: {
-            labels: xValues,
-            datasets: [{
-              backgroundColor: barColors,
-              data: yValues,
-            }]
-          },
-          options: {
-            title: {
-              display: true,
+    <script>
+        var pieData = {{ data_json|safe }};
+        var labels = pieData.map(item => item.label);
+        var values = pieData.map(item => item.value);
+
+        var ctx = document.getElementById('myChart').getContext('2d');
+        var myPieChart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: labels,
+                datasets: [{
+                    data: values,
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.7)',
+                        'rgba(54, 162, 235, 0.7)',
+                        // Agrega más colores si tienes más categorías
+                    ]
+                }]
             }
-          }
         });
-        </script>
+    </script>
         
-{% endblock %}
                 </div>
     <!-- Graphics energy end-->
 
 
-    <!-- Graphic batery Start -->
-    <div class="container-xxl py-5">
+       <!-- Graphic batery Start -->  
+       <div class="container-xxl py-5">
         <div class="container">
             <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
-                <h6 class="section-title bg-white text-center text-primary px-3">Porcentaje de carga</h6>
-                <h1 class="mb-5">Bateria</h1>
-            </div>
-            <div class="row g-4 justify-content-center">
-                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
-                    <div class="course-item bg-light">
-                        <div class="position-relative overflow-hidden">
-                        </div>
-                       </div>
-                </div>
+                <h6 class="section-title bg-white text-center text-primary px-3">Estado de </h6>
+                <h1 class="mb-5"> Bateria </h1>
             </div>
         </div>
+
+        {% block head %}
+         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+        {% endblock %}
+    
+        {% block content %}
+        <div class="container-fluid">
+          <div id="container">
+            <canvas id="myBatteryChart" style="inline-size:700%;max-inline-size:1000px;inset-inline-start:50%"></canvas>
+          </div>
+        </div>
+        
+        <script>
+            const batteryStatus = "Batería"; // Nombre de la batería
+            const batteryPercentage = 80; // Porcentaje de carga de la batería
+            const remainingPercentage = 100 - batteryPercentage; // Porcentaje restante
+          
+            const xVal = [batteryStatus, "Temperatura"];
+            const yVal = [batteryPercentage, 30];
+            const barC = ["#00aba9","#b91d47"];
+          
+            new Chart("myBatteryChart", {
+              type: "doughnut", // Tipo de gráfico de rosquilla
+              data: {
+                labels: xVal,
+                datasets: [
+                  {
+                    backgroundColor: barC,
+                    data: yVal,
+                  },
+                ],
+              },
+              options: {
+                cutoutPercentage: 70, // Porcentaje de recorte para crear un agujero en el centro
+                animation: {
+                  animateRotate: true,
+                },
+                title: {
+                  display: true,
+                  text: `Carga de ${batteryStatus}: ${batteryPercentage}%`,
+                  position: 'bottom',
+                },
+                plugins: {
+                  legend: {
+                    display: false,
+                  },
+                  tooltip: {
+                    enabled: false,
+                  },
+                },
+              },
+            });
+          </script>    
     </div>
-    <!-- Graphic batery End -->      
+    {% endblock %}
+    <!-- Graphic batery End -->  
+    
+      <!-- Graphic General Data -->  
+     
+      <div class="container-xxl py-5">
+        <div class="container">
+            <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
+                <h6 class="section-title bg-white text-center text-primary px-3">Datos </h6>
+                <h1 class="mb-5"> Generales </h1>
+            </div>
+        </div>
+        
+    </div>
+
+    <!-- Graphic General Data -->  
 
  <!-- Footer Start -->
  <div class="container-fluid bg-dark text-light footer pt-5 mt-5 wow fadeIn" data-wow-delay="0.1s">
