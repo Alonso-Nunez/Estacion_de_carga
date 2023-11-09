@@ -432,3 +432,24 @@
     padding-right: 0;
     border-right: none;
 }
+
+#myChart {
+    width: 50%; /* Ancho del gráfico */
+    max-width: 100px; /* Ancho máximo */
+    margin: 0 auto; /* Centrar horizontalmente */
+    display: block;
+  }
+
+  #myBatteryChart {
+    width: 50%; /* Ancho del gráfico */
+    max-width: 100px; /* Ancho máximo */
+    margin: 0 auto; /* Centrar horizontalmente */
+    display: block;
+  }
+
+  #myDataChart {
+    width: 50%; /* Ancho del gráfico */
+    max-width: 100px; /* Ancho máximo */
+    margin: 0 auto; /* Centrar horizontalmente */
+    display: block;
+  }

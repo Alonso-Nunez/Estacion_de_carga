@@ -102,7 +102,7 @@
     </div>
 
     <script>
-        var pieData = {{ data_json|safe }};
+        var pieData = {{ data1_json|safe }};
         var labels = pieData.map(item => item.label);
         var values = pieData.map(item => item.value);
 
@@ -116,6 +116,8 @@
                     backgroundColor: [
                         'rgba(255, 99, 132, 0.7)',
                         'rgba(54, 162, 235, 0.7)',
+                        'rgba(64, 62,  135, 0.7)',
+                        'rgba(100, 21, 80, 0.7)',
                         // Agrega más colores si tienes más categorías
                     ]
                 }]
@@ -136,11 +138,10 @@
             </div>
         </div>
 
-        {% block head %}
+        
          <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
-        {% endblock %}
+        
     
-        {% block content %}
         <div class="container-fluid">
           <div id="container">
             <canvas id="myBatteryChart" style="inline-size:700%;max-inline-size:1000px;inset-inline-start:50%"></canvas>
@@ -148,16 +149,14 @@
         </div>
         
         <script>
-            const batteryStatus = "Batería"; // Nombre de la batería
-            const batteryPercentage = 80; // Porcentaje de carga de la batería
-            const remainingPercentage = 100 - batteryPercentage; // Porcentaje restante
-          
-            const xVal = [batteryStatus, "Temperatura"];
-            const yVal = [batteryPercentage, 30];
-            const barC = ["#00aba9","#b91d47"];
+            const jsonData = {{ data2_json|safe }};
+            
+            const xVal = jsonData.map(item => item.label);
+            const yVal = jsonData.map(item => item.value);
+            const barC = ["#b91d47", "#00aba9"];
           
             new Chart("myBatteryChart", {
-              type: "doughnut", // Tipo de gráfico de rosquilla
+              type: "doughnut",
               data: {
                 labels: xVal,
                 datasets: [
@@ -168,15 +167,20 @@
                 ],
               },
               options: {
-                cutoutPercentage: 70, // Porcentaje de recorte para crear un agujero en el centro
+                cutoutPercentage: 70,
                 animation: {
                   animateRotate: true,
                 },
                 title: {
                   display: true,
-                  text: `Carga de ${batteryStatus}: ${batteryPercentage}%`,
-                  position: 'bottom',
+                  text: `${xVal[1]}: ${yVal[1]}%`,
+                  position: "bottom",
                 },
+                title2: {
+                    display: true,
+                    text: `${xVal[0]}: ${yVal[0]}%`,
+                    position: "bottom",
+                  },
                 plugins: {
                   legend: {
                     display: false,
@@ -187,13 +191,11 @@
                 },
               },
             });
-          </script>    
+          </script>          
     </div>
-    {% endblock %}
     <!-- Graphic batery End -->  
     
-      <!-- Graphic General Data -->  
-     
+      <!-- Graphic General Data -->        
       <div class="container-xxl py-5">
         <div class="container">
             <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
@@ -201,8 +203,55 @@
                 <h1 class="mb-5"> Generales </h1>
             </div>
         </div>
-        
+
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+
+     {% block content %}
+        <div class="container-fluid">
+          <div id="container">
+            <canvas id="myDataChart" style="inline-size:700%;max-inline-size:1000px;inset-inline-start:50%"></canvas>
+          </div>
+        </div>
+
+    <script>
+      const barData = [
+      { label: "Intensidad de Entrada", value: 15 },
+      { label: "Intensidad del Inversor", value: 20 },
+    ];
+
+    const labels = barData.map(item => item.label);
+    const values = barData.map(item => item.value);
+    const barColors = ["#3498db", "#e74c3c"];
+
+    new Chart("myDataChart", {
+      type: "bar",
+      data: {
+        labels: labels,
+        datasets: [{
+          data: values,
+          backgroundColor: barColors,
+        }],
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true,
+          },
+        },
+        legend: {
+          display: false,
+        },
+        title: {
+          display: true,
+          text: "Intensidad de Entrada e Intensidad del Inversor",
+          position: "top",
+        },
+      },
+    });
+    </script>
+        {% endblock %}
     </div>
+    
 
     <!-- Graphic General Data -->  
 
