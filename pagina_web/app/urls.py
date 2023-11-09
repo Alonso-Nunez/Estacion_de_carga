@@ -4,7 +4,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
-    path('', views.inicio, name='home'),
-    path('dashboard/', views.dashboard, name='dashboard'),
+    path('', views.dashboard, name='dashboard'),
+    path('inicio/', views.inicio, name='home'),
     
 ]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
