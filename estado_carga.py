@@ -10,6 +10,6 @@ def cargaAuto():
     Returns:
         Boolean: True en caso de que se pida cargar el vehiculo
     """
-    if(GPIO.input(11) == 1):
+    if(GPIO.input(11) == GPIO.HIGH):
         return True
     return False
