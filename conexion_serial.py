@@ -1,5 +1,4 @@
 import serial
-import time
 
 SERIAL_PORT ="/dev/ttyS0" #"/dev/ttyS0"  "/dev/ttyAMA0" o "/dev/ttyS0"
 BYTES_LECTURA = 10
