@@ -1,3 +1,4 @@
+import time
 import RPi.GPIO as GPIO
 
 
@@ -8,7 +9,7 @@ GPIO.setup(23, GPIO.OUT)
 GPIO.setup(24, GPIO.OUT)
 
 
-def peso_ponderado(fuente,valor):
+def peso_ponderado(fuente, valor):
     """
     Función pondera el valor de las mediciones de las entradas.
 
@@ -23,21 +24,21 @@ def peso_ponderado(fuente,valor):
     Returns:
         float: valor ponderado del voltaje obtenido mediante mediciones
     """
-    if fuente== 0:
-        if float(valor)*8.3<83:
+    if fuente == 0:
+        if float(valor)*8.3 < 83:
             return 0
         return float(valor)*8.3
     elif fuente == 1:
-        if float(valor)*6.9<69:
+        if float(valor)*6.9 < 69:
             return 0
         return float(valor)*6.9
     elif fuente == 2:
-        if float(valor)*5.7<57:
+        if float(valor)*5.7 < 57:
             return 0
         return float(valor)*5.7
-    else :
+    else:
         return float(valor)*0.4
-      
+
 
 def pasa_panel(instruccion):
     """
@@ -53,7 +54,7 @@ def pasa_panel(instruccion):
     else:
         print("Instruccion no encontrada")
 
-    
+
 def pasa_aero(instruccion):
     """
     Función que enciende o apaga la fuente (Aerogenerador) según sea necesario
@@ -67,7 +68,7 @@ def pasa_aero(instruccion):
         GPIO.output(24, GPIO.HIGH)
     else:
         print("Instruccion no encontrada")
-  
+
 
 def pasa_cfe(instruccion):
     """
@@ -83,6 +84,7 @@ def pasa_cfe(instruccion):
     else:
         print("Instruccion no encontrada")
 
+
 def acomodo_ponderado(ponderadoPanel, ponderadoAero, ponderadoBateria, ponderadoCFE):
     """
     Funcion que crea un arreglo con los pesos ponderados acomododados de mayor a menor
@@ -96,11 +98,13 @@ def acomodo_ponderado(ponderadoPanel, ponderadoAero, ponderadoBateria, ponderado
     Returns:
         arreglor array: arreglo ordenado con los valores de mayor a menor
     """
-    arreglo = [float(ponderadoPanel), float(ponderadoAero), float(ponderadoBateria), float(ponderadoCFE)]
+    arreglo = [float(ponderadoPanel), float(ponderadoAero),
+               float(ponderadoBateria), float(ponderadoCFE)]
     arreglo.sort(reverse=True)
     return arreglo
 
-def activar_fuente(arreglo,pP ,pA ,pC):
+
+def activar_fuente(arreglo, pP, pA, pC):
     """
     Funcion que activa el paso de corriente de la fuente seleccionada
 
@@ -116,10 +120,11 @@ def activar_fuente(arreglo,pP ,pA ,pC):
         pasa_aero(1)
     elif arreglo[0] == float(pC):
         pasa_cfe(1)
-    else :
+    else:
         pasa_cfe(0)
         pasa_aero(0)
         pasa_panel(0)
+
 
 def apagar_fuentes():
     """
