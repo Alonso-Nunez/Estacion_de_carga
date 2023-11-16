@@ -3,4 +3,8 @@ env
 conexion_serial2.py
 =======
 Estacion_de_carga.zip
+<<<<<<< HEAD
 >>>>>>> f3295893ccec6c3c6b3b83d18386b9097cb43693
+=======
+conexion_serial_2.py
+>>>>>>> dadc267d1b186cefc33a826fa80e02ae0962aca2

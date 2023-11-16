@@ -5,6 +5,7 @@ from seleccion_fuente import *
 from switches import *
 from conexion_mongo import *
 from conexion_serial import *
+from estado_carga import *
 #import RPi.GPIO as GPIO
 '''
 GPIO.setmode(GPIO.BCM)
@@ -75,7 +76,7 @@ def estado_cargas():
     global cargarAuto
     global cargarBateria
     global envioDB
-    cargarAuto = True # Remplazar con función ¿Auto cargando?
+    cargarAuto = cargaAuto()
     cargarBateria = not cargarAuto # Reemplazar con función de ¿Cargar bateria?
     envioDB = cargarAuto and cargarBateria
     time.sleep(10)
