@@ -6,7 +6,7 @@ GPIO.setmode(GPIO.BCM)
 GPIO.setup(25, GPIO.OUT)
 
 
-def iniciar_pwm(f_trabajo,dc_inicial):
+def iniciar_pwm(f_trabajo, dc_inicial):
     """_summary_
 
     Args:
@@ -20,6 +20,7 @@ def iniciar_pwm(f_trabajo,dc_inicial):
     pwm.start(dc_inicial)
     return pwm
 
+
 def parar_pwm(pwm):
     """
     Detiene el pwm y lanza alerta
@@ -30,7 +31,8 @@ def parar_pwm(pwm):
     pwm.stop()
     print("Fin de la carga")
 
-def actualizar_dc(pwm,dc_nuevo):
+
+def actualizar_dc(pwm, dc_nuevo):
     """
     Actualiza el DutyCyle del pwm seleccionado
 
@@ -42,4 +44,14 @@ def actualizar_dc(pwm,dc_nuevo):
     print("Ducty Cycle actualizado")
 
 
+bateria_pwm = iniciar_pwm(500, 100)
+continuar = True
+while continuar:
+    dato = input("Digitel el nuevo Duty Cicle: ")
+    if dato == "fin":
+        continuar = False
+    else:
+        actualizar_dc(bateria_pwm, dato)
+
+parar_pwm(bateria_pwm)
 GPIO.cleanup()
