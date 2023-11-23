@@ -32,7 +32,7 @@
 <body>
     <!-- Spinner Start -->
     <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
-        <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+        <div class="spinner-border text-primary" style="inline-size: 3rem; block-size: 3rem;" role="status">
             <span class="sr-only">Loading...</span>
         </div>
     </div>
@@ -102,28 +102,47 @@
     </div>
 
     <script>
-        var pieData = {{ data1_json|safe }};
-        var labels = pieData.map(item => item.label);
-        var values = pieData.map(item => item.value);
-
+      document.addEventListener('DOMContentLoaded', function () {
         var ctx = document.getElementById('myChart').getContext('2d');
-        var myPieChart = new Chart(ctx, {
-            type: 'pie',
+        var documentos = {{ documentos|safe }};
+        var fechas = documentos.map(doc => doc.Date); // Asumiendo que hay un campo 'fecha' en tus documentos
+        var solar = documentos.map(doc => doc.voltaje_Panel_Solar);
+        var aerogenerador = documentos.map(doc => doc.voltaje_Aerogenerador);
+        var CFE = documentos.map(doc => doc.voltaje_CFE); 
+        var Bateria = documentos.map(doc => doc.voltaje_Bateria);
+
+        var myChart = new Chart(ctx, {
+            type: 'line',
             data: {
-                labels: labels,
+                labels: fechas,
                 datasets: [{
-                    data: values,
-                    backgroundColor: [
-                        'rgba(255, 99, 132, 0.7)',
-                        'rgba(54, 162, 235, 0.7)',
-                        'rgba(64, 62,  135, 0.7)',
-                        'rgba(100, 21, 80, 0.7)',
-                        // Agrega más colores si tienes más categorías
-                    ]
-                }]
+                    label: 'Voltaje Panel Solar',
+                    data: solar,
+                    borderColor: 'rgb(75, 192, 192)',
+                    borderWidth: 5
+                },
+                {
+                  label: 'Voltaje Aerogenerador',
+                  data: aerogenerador,
+                  borderColor: 'rgb(255, 99, 132)',
+                  borderWidth: 5
+              },
+              {
+                label: 'Voltaje CFE',
+                data: CFE,
+                borderColor: 'rgb(255, 205, 86)',
+                borderWidth: 5
+            },
+            {
+              label: 'Voltaje Bateria',
+              data: Bateria,
+              borderColor: 'rgb(155, 20, 68)',
+              borderWidth: 5
+          }]
             }
         });
-    </script>
+    });
+  </script>
         
                 </div>
     <!-- Graphics energy end-->
@@ -149,51 +168,29 @@
         </div>
         
         <script>
-            const jsonData = {{ data2_json|safe }};
-            
-            const xVal = jsonData.map(item => item.label);
-            const yVal = jsonData.map(item => item.value);
-            const barC = ["#b91d47", "#00aba9"];
-          
-            new Chart("myBatteryChart", {
-              type: "doughnut",
-              data: {
-                labels: xVal,
-                datasets: [
-                  {
-                    backgroundColor: barC,
-                    data: yVal,
-                  },
-                ],
-              },
-              options: {
-                cutoutPercentage: 70,
-                animation: {
-                  animateRotate: true,
-                },
-                title: {
-                  display: true,
-                  text: `${xVal[1]}: ${yVal[1]}%`,
-                  position: "bottom",
-                },
-                title2: {
-                    display: true,
-                    text: `${xVal[0]}: ${yVal[0]}%`,
-                    position: "bottom",
-                  },
-                plugins: {
-                  legend: {
-                    display: false,
-                  },
-                  tooltip: {
-                    enabled: false,
-                  },
-                },
-              },
+          document.addEventListener('DOMContentLoaded', function () {
+            var ctx1 = document.getElementById('myBatteryChart').getContext('2d');
+            var documentos1 = {{ documentos1|safe }};
+            var fechas1 = documentos1.map(doc => doc.Date); // Asumiendo que hay un campo 'fecha' en tus documentos
+            var temperatura= documentos1.map(doc => doc.temperatura_Bateria);
+    
+            var myBatteryChart = new Chart(ctx1, {
+                type: 'line',
+                data: {
+                    labels: fechas1,
+                    datasets: [{
+                        label: 'Temperatura',
+                        data: temperatura,
+                        borderColor: 'rgb(75, 192, 192)',
+                        borderWidth: 5
+                    }]
+                }
             });
+        });
           </script>          
     </div>
     <!-- Graphic batery End -->  
+
     
       <!-- Graphic General Data -->        
       <div class="container-xxl py-5">
@@ -214,46 +211,37 @@
         </div>
 
     <script>
-      const barData = [
-      { label: "Intensidad de Entrada", value: 15 },
-      { label: "Intensidad del Inversor", value: 20 },
-    ];
+      document.addEventListener('DOMContentLoaded', function () {
+        var ctx2 = document.getElementById('myDataChart').getContext('2d');
+        var documentos2 = {{ documentos2|safe }};
+        var fechas2 = documentos2.map(doc => doc.Date); // Asumiendo que hay un campo 'fecha' en tus documentos
+        var entrada= documentos2.map(doc => doc.intensidad_Entrada);
+        var inversor= documentos2.map(doc => doc.intensidad_Inversor);
 
-    const labels = barData.map(item => item.label);
-    const values = barData.map(item => item.value);
-    const barColors = ["#3498db", "#e74c3c"];
-
-    new Chart("myDataChart", {
-      type: "bar",
-      data: {
-        labels: labels,
-        datasets: [{
-          data: values,
-          backgroundColor: barColors,
-        }],
-      },
-      options: {
-        scales: {
-          y: {
-            beginAtZero: true,
-          },
-        },
-        legend: {
-          display: false,
-        },
-        title: {
-          display: true,
-          text: "Intensidad de Entrada e Intensidad del Inversor",
-          position: "top",
-        },
-      },
+        var myDataChart = new Chart(ctx2, {
+            type: 'line',
+            data: {
+                labels: fechas2,
+                datasets: [{
+                    label: 'Intensidad Entrada',
+                    data: entrada,
+                    borderColor: 'rgb(75, 192, 192)',
+                    borderWidth: 5
+                },
+                {
+                      label: 'Intensidad Inversor',
+                      data: inversor,
+                      borderColor: 'rgb(55, 205, 192)',
+                      borderWidth: 5
+                  }]
+            }
+        });
     });
     </script>
         {% endblock %}
     </div>
     
-
-    <!-- Graphic General Data -->  
+    <!-- End Graphic General Data -->  
 
  <!-- Footer Start -->
  <div class="container-fluid bg-dark text-light footer pt-5 mt-5 wow fadeIn" data-wow-delay="0.1s">
