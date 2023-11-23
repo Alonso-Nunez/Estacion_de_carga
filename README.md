@@ -37,6 +37,16 @@ Instalar pymongo paara extrare datos de MongoDB
 ``` 
 pip install pymongo
 ```
+Nombre variables
+V_Panel
+V_Aerogenerador
+V_CFE
+V_Bateria
+T_Bateria
+Date
+I_Entrada
+I_Inversor
+
 
 
 
