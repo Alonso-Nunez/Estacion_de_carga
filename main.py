@@ -6,19 +6,21 @@ from switches import *
 from conexion_mongo import *
 from conexion_serial import *
 from estado_carga import *
-#import RPi.GPIO as GPIO
-'''
+import RPi.GPIO as GPIO
+
 GPIO.setmode(GPIO.BCM)
 # Uso switches
-GPIO.setup(5,GPIO.OUT)
-GPIO.setup(6,GPIO.OUT)
+GPIO.setup(5,GPIO.OUT)#switch bateria
+GPIO.setup(6,GPIO.OUT)#switch inversor
 # Uso selector de fuente
-GPIO.setup(22, GPIO.OUT)
-GPIO.setup(23, GPIO.OUT)
-GPIO.setup(24, GPIO.OUT)
+GPIO.setup(22, GPIO.OUT)#switch CFE
+GPIO.setup(23, GPIO.OUT)#switch Panel
+GPIO.setup(24, GPIO.OUT)#switch Aero
 # Uso PWM
 GPIO.setup(25, GPIO.OUT)
-'''
+# Uso de activador
+GPIO.setup(11, GPIO.IN)
+
 # Constante
 MENSAJE_PIC = ["vol_Panel", "vol_Aero", "vol_Bat", "vol_CFE","vol_Inv", "int_Ent",  "int_Inv", "tem_Bat"]
 BATERIA_CARGADA = 13
