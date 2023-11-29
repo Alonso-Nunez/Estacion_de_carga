@@ -1,4 +1,5 @@
 import RPi.GPIO as GPIO
+import time
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(11, GPIO.IN)
@@ -13,3 +14,8 @@ def cargaAuto():
     if(GPIO.input(11) == GPIO.HIGH):
         return True
     return False
+
+
+while True:
+    auto = cargaAuto()
+    time.sleep(5)
