@@ -1,8 +1,9 @@
 import time
 import serial
 
-SERIAL_PORT ="/dev/ttyS0" #"/dev/ttyS0"  "/dev/ttyAMA0" o "/dev/ttyS0"
-BYTES_LECTURA = 10
+SERIAL_PORT = "/dev/ttyS0"  # "/dev/ttyS0"  "/dev/ttyAMA0" o "/dev/ttyS0"
+BYTES_LECTURA = 2
+
 
 def crear_conexion_serial():
     """
@@ -11,11 +12,11 @@ def crear_conexion_serial():
     Returns:
         conexion (objet): Objeto de la conexion creada
     """
-    conexion = serial.Serial(SERIAL_PORT, 9600, timeout= 1)
+    conexion = serial.Serial(SERIAL_PORT, 9600, timeout=10)
     return conexion
-    
 
-def envio_valores(conexion,valores):
+
+def envio_valores(conexion, valores):
     """
     Función que envia datos por el puerto serial
 
@@ -26,7 +27,7 @@ def envio_valores(conexion,valores):
     Returns:
         boolean: Estado del exito del envio de datos
     """
-    data = bytes(valores,'utf-8')
+    data = bytes(valores, 'utf-8')
     if conexion.write(data):
         return True
     return False
@@ -57,18 +58,16 @@ def cerrar_conexion_serial(conexion):
 
 try:
     global con
-    con= serial.Serial(SERIAL_PORT, baudrate=9600, timeout=1)
+    con = serial.Serial(SERIAL_PORT, baudrate=9600, timeout=1)
     while True:
-        print(envio_valores(con,"Hola mundo"))
+        envio_valores(con, input("Escribe el valor a leer "))
         lectura = leer_valores(con)
-        print(lectura,type(lectura))
+        print(str(lectura), type(lectura))
         time.sleep(0.5)
-    
+
 except serial.SerialException as err:
     print("Ocurrio un error en el envio o lectura de datos", err)
 except serial.SerialTimeoutException as error:
     print("Tiempo de espera superado", error)
 finally:
     cerrar_conexion_serial(con)
-
-

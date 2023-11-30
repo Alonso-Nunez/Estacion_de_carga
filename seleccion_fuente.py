@@ -143,15 +143,15 @@ try:
     voltajePanel = input("Ingresa el voltaje del Panel Solar: ")
     voltajeAero = input("Ingresa el voltaje del Aerogenerador: ")
     voltajeCfe = input("Ingresa el voltaje de CFE: ")
-    #Ponderación de los valores obtenidos
+    # Ponderación de los valores obtenidos
     ponderadoPanel = peso_ponderado(0, voltajePanel)
     ponderadoAero = peso_ponderado(1, voltajeAero)
-    ponderadoCfe =  peso_ponderado(2, voltajeCfe)
-    #Creacion de un arreglo que se acomoda
-    arreglo=acomodo_ponderado(ponderadoPanel,ponderadoAero,0,ponderadoCfe)
+    ponderadoCfe = peso_ponderado(3, voltajeCfe)
+    # Creacion de un arreglo que se acomoda
+    arreglo = acomodo_ponderado(ponderadoPanel, ponderadoAero, 0, ponderadoCfe)
     print(arreglo)
-    #Selector
-    activar_fuente(arreglo,ponderadoPanel,ponderadoAero,ponderadoCfe)
+    # Selector
+    activar_fuente(arreglo, ponderadoPanel, ponderadoAero, ponderadoCfe)
     '''if arreglo[0] == ponderadoPanel:
         pasa_panel(1)
     elif arreglo[0] == ponderadoAero:
@@ -162,8 +162,16 @@ try:
         pasa_cfe(0)
         pasa_aero(0)
         pasa_panel(0)
-    '''    
-    time.sleep(10)  
+    '''
+    # pasa_panel(1)
+    # pasa_aero(1)
+    # pasa_cfe(1)
+    print("encendido")
+    time.sleep(10)
+    print("Apagado")
+    # pasa_panel(0)
+    # pasa_aero(0)
+    # 12pasa_cfe(0)
 
 except:
     print("error")
