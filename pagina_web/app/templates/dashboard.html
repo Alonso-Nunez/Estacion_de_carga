@@ -106,10 +106,10 @@
         var ctx = document.getElementById('myChart').getContext('2d');
         var documentos = {{ documentos|safe }};
         var fechas = documentos.map(doc => doc.Date); // Asumiendo que hay un campo 'fecha' en tus documentos
-        var solar = documentos.map(doc => doc.voltaje_Panel_Solar);
-        var aerogenerador = documentos.map(doc => doc.voltaje_Aerogenerador);
-        var CFE = documentos.map(doc => doc.voltaje_CFE); 
-        var Bateria = documentos.map(doc => doc.voltaje_Bateria);
+        var solar = documentos.map(doc => doc.V_Panel);
+        var aerogenerador = documentos.map(doc => doc.V_Aerogenerador);
+        var CFE = documentos.map(doc => doc.V_CFE); 
+        var Bateria = documentos.map(doc => doc.V_Bateria);
 
         var myChart = new Chart(ctx, {
             type: 'line',
@@ -172,7 +172,7 @@
             var ctx1 = document.getElementById('myBatteryChart').getContext('2d');
             var documentos1 = {{ documentos1|safe }};
             var fechas1 = documentos1.map(doc => doc.Date); // Asumiendo que hay un campo 'fecha' en tus documentos
-            var temperatura= documentos1.map(doc => doc.temperatura_Bateria);
+            var temperatura= documentos1.map(doc => doc.T_Bateria);
     
             var myBatteryChart = new Chart(ctx1, {
                 type: 'line',
@@ -199,6 +199,18 @@
                 <h6 class="section-title bg-white text-center text-primary px-3">Datos </h6>
                 <h1 class="mb-5"> Generales </h1>
             </div>
+
+
+
+
+
+
+
+
+
+
+
+            
         </div>
 
       <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
@@ -215,8 +227,11 @@
         var ctx2 = document.getElementById('myDataChart').getContext('2d');
         var documentos2 = {{ documentos2|safe }};
         var fechas2 = documentos2.map(doc => doc.Date); // Asumiendo que hay un campo 'fecha' en tus documentos
-        var entrada= documentos2.map(doc => doc.intensidad_Entrada);
-        var inversor= documentos2.map(doc => doc.intensidad_Inversor);
+        var entrada= documentos2.map(doc => doc.I_Entrada);
+        var inversor= documentos2.map(doc => doc.I_Inversor);
+
+
+
 
         var myDataChart = new Chart(ctx2, {
             type: 'line',
