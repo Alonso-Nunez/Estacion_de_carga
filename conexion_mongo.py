@@ -55,15 +55,15 @@ def insertar_datos(datos):
         datos (array): arreglo con los datos a guardar
     """
     enviarDatos = {}
-    enviarDatos["voltaje Panel Solar"] = datos[0]
-    enviarDatos["voltaje Aerogenerador"] = datos[1]
-    enviarDatos["voltaje Bateria"] = datos[2]
-    enviarDatos["voltaje CFE"] = datos[3]
-    enviarDatos["voltaje Inversor"] = datos[4]
-    enviarDatos["intensidad Entrada"] = datos[5]
-    enviarDatos["intensidad Inversor"] = datos[6]
-    enviarDatos["temperatura Bateria"] = datos[7]
-    enviarDatos["hora"] = time.localtime()
+    enviarDatos["V_Panel"] = datos[0]
+    enviarDatos["V_Aerogenerador"] = datos[1]
+    enviarDatos["V_Bateria"] = datos[2]
+    enviarDatos["V_CFE"] = datos[3]
+    enviarDatos["V_Inversor"] = datos[4]
+    enviarDatos["I_Entrada"] = datos[5]
+    enviarDatos["I_Inversor"] = datos[6]
+    enviarDatos["T_Bateria"] = datos[7]
+    enviarDatos["Date"] = time.localtime()
     print(enviarDatos)
     try:
         conexion, coleccion = conectar_db(MONGO_BD, MONGO_COLECCION)
