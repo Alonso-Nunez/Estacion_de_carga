@@ -8,6 +8,16 @@ TEMPERATURA = 100
 VOLTAJE_MAX = 5
 
 def convertidor_serial(bytraje):
+    """
+    Función que convierte los bytes recibidos de la comunicación serial en un entero o un mensaje
+
+    Args:
+        bytraje (bytes): Bytes recibidos de la comunición serial
+
+    Returns:
+        str: Mensaje obtenido en caso de no ser números
+        float: valor obtenido de la comunicación serial 
+    """
     if re.search("[A-Z]+[A-Z]", str(bytraje)):
         return str(bytraje)
     else:
@@ -16,18 +26,50 @@ def convertidor_serial(bytraje):
 
 
 def calcular_voltaje_DC(valor):
+    """Función que retorna el valor real del voltaje a 12v DC
+
+    Args:
+        valor (float): valor obtenido de la función de converidor_serial()
+
+    Returns:
+        float: valor real de la medición
+    """
     return valor * VOLTAJE_DC/VOLTAJE_MAX
 
 
 def calcular_amperaje(valor):
+    """Función que retorna el valor real del amperaje a 5v DC
+
+    Args:
+        valor (float): valor obtenido de la función de converidor_serial()
+
+    Returns:
+        float: valor real de la medición
+    """
     return valor * AMPERAJE/VOLTAJE_MAX
 
 
 def calcular_temperatura(valor):
+    """Función que retorna el valor real de la temperatura a 5v DC
+
+    Args:
+        valor (float): valor obtenido de la función de converidor_serial()
+
+    Returns:
+        float: valor real de la medición
+    """
     return valor * TEMPERATURA
 
 
 def calcular_voltaje_AC(valor):
+    """Función que retorna el valor real del voltaje a 140v AC
+
+    Args:
+        valor (float): valor obtenido de la función de converidor_serial()
+
+    Returns:
+        float: valor real de la medición
+    """
     return valor * VOLTAJE_AC/VOLTAJE_MAX
 
 # TEST
