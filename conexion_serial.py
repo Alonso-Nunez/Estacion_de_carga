@@ -1,10 +1,10 @@
 import time
 import serial
-import struct
+from convertidor_senial import *
 
 SERIAL_PORT = "/dev/ttyS0"  # "/dev/ttyS0"  "/dev/ttyAMA0" o "/dev/ttyS0"
 BYTES_LECTURA = 2
-VOLTAJE_RESOLUCION = 5/1023
+#VOLTAJE_RESOLUCION = 5/1023
 
 
 def crear_conexion_serial():
@@ -64,11 +64,12 @@ try:
     while True:
         envio_valores(con, input("Escribe el valor a leer "))
         lectura = leer_valores(con)
-        lectura_i = int.from_bytes(lectura, byteorder='big')
-        print(lectura_i, type(lectura_i))
-        voltaje = float(lectura_i)*VOLTAJE_RESOLUCION
-        print(lectura, type(lectura), len(lectura))
-        print(str(voltaje))
+        voltaje = convertidor_serial(lectura)
+        #lectura_i = int.from_bytes(lectura, byteorder='big')
+        #print(lectura_i, type(lectura_i))
+        #voltaje = float(lectura_i)*VOLTAJE_RESOLUCION
+        #print(lectura, type(lectura), len(lectura))
+        print(voltaje)
         time.sleep(0.5)
 
 except serial.SerialException as err:
