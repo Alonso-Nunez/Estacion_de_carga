@@ -31,15 +31,33 @@ conSerial = crear_conexion_serial()
 
 def intercambio_datos_PIC(mensaje):
     """
-    Función que consulta los valores de las me
+    Función que consulta los valores de las mediciones e ingresan ese valor
+    a la cadena lectruaPIC
     Args:
         mensaje (String): Instruccion a enviar al PIC
 
     Returns:
         bool: Envio de mensaje Exitoso o no
     """
-    if envio_valores(mensaje):
-        lecturaPIC[mensaje.index] = str(leer_valores(conSerial))
+    if envio_valores(conSerial,mensaje):
+        if mensaje.index == 0:
+            lecturaPIC[mensaje.index] = str(calcular_voltaje_DC(convertidor_serial(leer_valores(conSerial))))
+        elif mensaje.index == 1:
+            lecturaPIC[mensaje.index] = str(calcular_voltaje_DC(convertidor_serial(leer_valores(conSerial))))
+        elif mensaje.index == 2:
+            lecturaPIC[mensaje.index] = str(calcular_voltaje_DC(convertidor_serial(leer_valores(conSerial))))
+        elif mensaje.index == 3:
+            lecturaPIC[mensaje.index] = str(calcular_voltaje_AC(convertidor_serial(leer_valores(conSerial))))
+        elif mensaje.index == 4:
+            lecturaPIC[mensaje.index] = str(calcular_voltaje_DC(convertidor_serial(leer_valores(conSerial))))
+        elif mensaje.index == 5:
+            lecturaPIC[mensaje.index] = str(calcular_amperaje(convertidor_serial(leer_valores(conSerial))))
+        elif mensaje.index == 6:
+            lecturaPIC[mensaje.index] = str(calcular_amperaje(convertidor_serial(leer_valores(conSerial))))
+        elif mensaje.index == 7:
+            lecturaPIC[mensaje.index] = str(calcular_temperatura(convertidor_serial(leer_valores(conSerial))))
+        else:
+            print(convertidor_serial(leer_valores(conSerial)))
         return True
     else:
         print ("Error en el envio de datos lectura")
@@ -91,6 +109,11 @@ def principal():
         # Variables globales para control de hilos
         global continuarEntradas
         global alimentacion
+        inicio_serial = True
+        while inicio_serial:
+            envio_valores(conSerial,"HI")
+            if convertidor_serial(leer_valores(conSerial)) == "OK":
+                inicio_serial = False
 
         while True:
 
