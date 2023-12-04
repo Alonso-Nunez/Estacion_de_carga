@@ -14,9 +14,9 @@
 
     
 
-    <!-- Icon Font Stylesheet -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Icon Font Stylesheet-->
+    <link href="{% static "css/cdnjs.cloudflare.com_ajax_libs_font-awesome_5.10.0_css_all.min.css"%}" rel="stylesheet">
+    <link href="{% static "css/cdn.jsdelivr.net_npm_bootstrap-icons@1.4.1_font_bootstrap-icons.css"%}" rel="stylesheet">
     
     <!-- Libraries Stylesheet -->
     <link href="{% static "lib/animate/animate.min.css"%}" rel="stylesheet">
@@ -91,15 +91,15 @@
                     </div>
                 
 
+<script src="{% static "js/cdnjs.cloudflare.com_ajax_libs_Chart.js_2.9.4_Chart.js"%}"></script>
+
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
-
-
-
 <canvas id="myChart" style="inline-size:700%;max-inline-size:1000px;inset-inline-start:50%"></canvas>
     <div class="container-fluid">
         <div id="container">
         </div>
-    </div>
+    </div>'rgb(75, 192, 192)'
 
     <script>
       document.addEventListener('DOMContentLoaded', function () {
@@ -158,7 +158,7 @@
         </div>
 
         
-         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+        <script src="{% static "js/cdnjs.cloudflare.com_ajax_libs_Chart.js_2.9.4_Chart.js"%}"></script>
         
     
         <div class="container-fluid">
@@ -181,7 +181,7 @@
                     datasets: [{
                         label: 'Temperatura',
                         data: temperatura,
-                        borderColor: 'rgb(75, 192, 192)',
+                        borderColor: 'rgb(155, 20, 68)',
                         borderWidth: 5
                     }]
                 }
@@ -199,21 +199,10 @@
                 <h6 class="section-title bg-white text-center text-primary px-3">Datos </h6>
                 <h1 class="mb-5"> Generales </h1>
             </div>
-
-
-
-
-
-
-
-
-
-
-
             
         </div>
 
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+        <script src="{% static "js/cdnjs.cloudflare.com_ajax_libs_Chart.js_2.9.4_Chart.js"%}"></script>
 
      {% block content %}
         <div class="container-fluid">
@@ -240,13 +229,13 @@
                 datasets: [{
                     label: 'Intensidad Entrada',
                     data: entrada,
-                    borderColor: 'rgb(75, 192, 192)',
+                    borderColor: 'rgb(255, 99, 132)',
                     borderWidth: 5
                 },
                 {
                       label: 'Intensidad Inversor',
                       data: inversor,
-                      borderColor: 'rgb(55, 205, 192)',
+                      borderColor: 'rgb(255, 205, 86)',
                       borderWidth: 5
                   }]
             }
@@ -287,6 +276,9 @@
 
     <!-- JavaScript Libraries -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script><script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script><script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script><script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{% static "lib/wow/wow.min.js"%}"></script>
     <script src="{% static "lib/easing/easing.min.js"%}"></script>
