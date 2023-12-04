@@ -6,6 +6,7 @@ from switches import *
 from conexion_mongo import *
 from conexion_serial import *
 from estado_carga import *
+from convertidor_senial import *
 import RPi.GPIO as GPIO
 
 GPIO.setmode(GPIO.BCM)
