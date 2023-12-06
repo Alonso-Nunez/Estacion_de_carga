@@ -20,7 +20,7 @@ GPIO.setup(24, GPIO.OUT)  # switch Aero
 # Uso PWM
 GPIO.setup(25, GPIO.OUT)
 # Uso de activador
-GPIO.setup(11, GPIO.IN)
+GPIO.setup(12, GPIO.IN)
 
 # Constante
 MENSAJE_PIC = ["vol_Panel", "vol_Aero", "vol_Bat",
