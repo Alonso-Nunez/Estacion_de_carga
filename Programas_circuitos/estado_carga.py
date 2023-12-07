@@ -2,7 +2,7 @@ import RPi.GPIO as GPIO
 import time
 
 GPIO.setmode(GPIO.BCM)
-GPIO.setup(11, GPIO.IN)
+GPIO.setup(12, GPIO.IN)
 
 def cargaAuto():
     """
@@ -11,7 +11,7 @@ def cargaAuto():
     Returns:
         Boolean: True en caso de que se pida cargar el vehiculo
     """
-    if(GPIO.input(11) == GPIO.HIGH):
+    if(GPIO.input(12) == GPIO.HIGH):
         return True
     return False
 
