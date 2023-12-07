@@ -23,8 +23,8 @@ GPIO.setup(25, GPIO.OUT)
 GPIO.setup(12, GPIO.IN)
 
 # Constante
-MENSAJE_PIC = ["vol_Panel", "vol_Aero", "vol_Bat",
-               "vol_CFE", "vol_Inv", "int_Ent",  "int_Inv", "tem_Bat"]
+MENSAJE_PIC = ["V1", "V2", "V3",
+               "V4", "V5", "I1",  "I2", "TM"]
 BATERIA_CARGADA = 13
 lecturaPIC = ["", "", "", "", "", "", "", ""]
 
