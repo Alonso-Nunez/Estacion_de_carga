@@ -58,6 +58,7 @@ def cerrar_conexion_serial(conexion):
     conexion.close()
 
 
+'''
 try:
     global con
     con = serial.Serial(SERIAL_PORT, baudrate=9600, timeout=1)
@@ -78,3 +79,4 @@ except serial.SerialTimeoutException as error:
     print("Tiempo de espera superado", error)
 finally:
     cerrar_conexion_serial(con)
+'''
