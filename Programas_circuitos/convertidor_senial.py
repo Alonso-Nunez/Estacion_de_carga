@@ -3,9 +3,11 @@ import re
 VOLTAJE_RESOLUCION = 5/1023
 VOLTAJE_DC = 12
 VOLTAJE_AC = 140
+RESOLUCION_VOLTAJE_AC = 127/14
 AMPERAJE = 5
 TEMPERATURA = 100
 VOLTAJE_MAX = 5
+RAIZ_DOS=math.sqrt(2)
 
 def convertidor_serial(bytraje):
     """
@@ -70,7 +72,7 @@ def calcular_voltaje_AC(valor):
     Returns:
         float: valor real de la medición
     """
-    return valor * VOLTAJE_AC/VOLTAJE_MAX
+    return ((valor*4)/RAIZ_DOS) * RESOLUCION_VOLTAJE_AC
 
 # TEST
 '''
