@@ -43,7 +43,7 @@ def actualizar_dc(pwm, dc_nuevo):
     pwm.ChangeDutyCycle(int(dc_nuevo))
     print("Ducty Cycle actualizado")
 
-
+'''
 bateria_pwm = iniciar_pwm(500, 100)
 continuar = True
 while continuar:
@@ -55,3 +55,4 @@ while continuar:
 
 parar_pwm(bateria_pwm)
 GPIO.cleanup()
+'''
