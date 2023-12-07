@@ -5,6 +5,7 @@ import RPi.GPIO as GPIO
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(5, GPIO.OUT)
 GPIO.setup(6, GPIO.OUT)
+GPIO.setup(13, GPIO.OUT)
 
 
 def io_inversor(instruccion):
@@ -33,6 +34,21 @@ def io_bateria(instruccion):
         GPIO.output(5, GPIO.LOW)
     elif instruccion == 1:
         GPIO.output(5, GPIO.HIGH)
+    else:
+        print("Instrucción no encontrada")
+
+
+def oi_carga(instruccion):
+    """
+    Función que enciende o apaga el switch de la carga de la batería
+
+    Args:
+         Instrucción (int): recibe un 1 para encender o un 0 para apagar
+    """
+    if instruccion == 0:
+        GPIO.output(13, GPIO.LOW)
+    elif instruccion == 1:
+        GPIO.output(13, GPIO.HIGH)
     else:
         print("Instrucción no encontrada")
 
