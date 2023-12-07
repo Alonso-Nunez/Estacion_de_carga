@@ -1,5 +1,5 @@
 import RPi.GPIO as GPIO
-import time
+# import time
 
 
 # Iniciaclización de los puertos GPIO a usar
@@ -138,7 +138,7 @@ def apagar_fuentes():
     pasa_panel(0)
     return False
 
-
+'''
 try:
     voltajePanel = input("Ingresa el voltaje del Panel Solar: ")
     voltajeAero = input("Ingresa el voltaje del Aerogenerador: ")
@@ -180,3 +180,4 @@ finally:
     pasa_aero(0)
     pasa_panel(0)
     GPIO.cleanup()
+'''
