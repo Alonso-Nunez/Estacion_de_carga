@@ -1,5 +1,5 @@
 import RPi.GPIO as GPIO
-import tkinter as tk
+# import tkinter as tk
 
 # Inicialización  de los puertos GPIO a usar
 GPIO.setmode(GPIO.BCM)
@@ -36,7 +36,7 @@ def io_bateria(instruccion):
     else:
         print("Instrucción no encontrada")
 
-
+'''
 def color_inversor():
     global color_in
     print(color_in, color_ba)
@@ -82,3 +82,4 @@ print(color_in, color_ba)
 w.mainloop()
 print("Fin de programa")
 GPIO.cleanup()
+'''
