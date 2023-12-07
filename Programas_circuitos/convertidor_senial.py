@@ -73,6 +73,7 @@ def calcular_voltaje_AC(valor):
     return valor * VOLTAJE_AC/VOLTAJE_MAX
 
 # TEST
+'''
 try:
     while True:
         data = b'\xff'#bytes(input("Escribe la cadena de bytes\n"),'utf-8')
@@ -94,3 +95,4 @@ try:
                 print("Opción no valida")
 except:
     print("ERROR")
+'''
