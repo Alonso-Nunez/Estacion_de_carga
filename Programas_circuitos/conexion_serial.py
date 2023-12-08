@@ -1,10 +1,8 @@
 import time
 import serial
-# from convertidor_senial import convertidor_serial
 
-SERIAL_PORT = "/dev/ttyS0"  # "/dev/ttyS0"  "/dev/ttyAMA0" o "/dev/ttyS0"
+SERIAL_PORT = "/dev/ttyS0"
 BYTES_LECTURA = 2
-# VOLTAJE_RESOLUCION = 5/1023
 
 
 def crear_conexion_serial():
@@ -15,6 +13,7 @@ def crear_conexion_serial():
         conexion (objet): Objeto de la conexion creada
     """
     conexion = serial.Serial(SERIAL_PORT, 9600, timeout=10)
+    print("Conexion serial establecida\n")
     return conexion
 
 
