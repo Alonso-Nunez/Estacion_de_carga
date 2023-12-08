@@ -2,17 +2,18 @@ import time
 import threading as thr
 from envio_pwm import *
 from seleccion_fuente import *
-from switches import *
 from conexion_mongo import *
 from conexion_serial import *
 from estado_carga import *
 from convertidor_senial import *
+from switches import *
 import RPi.GPIO as GPIO
 
 GPIO.setmode(GPIO.BCM)
 # Uso switches
 GPIO.setup(5, GPIO.OUT)  # switch bateria
 GPIO.setup(6, GPIO.OUT)  # switch inversor
+GPIO.setup(13, GPIO.OUT) # switch cargar bateria
 # Uso selector de fuente
 GPIO.setup(22, GPIO.OUT)  # switch CFE
 GPIO.setup(23, GPIO.OUT)  # switch Panel
@@ -25,7 +26,8 @@ GPIO.setup(12, GPIO.IN)
 # Constante
 MENSAJE_PIC = ["V1", "V2", "V3",
                "V4", "V5", "I1",  "I2", "TM"]
-BATERIA_CARGADA = 13
+BATERIA_CARGADA = 12
+TEMPERATURA_MAX = 45
 lecturaPIC = ["", "", "", "", "", "", "", ""]
 
 # Conexiones externas
@@ -93,14 +95,21 @@ def paso_fuentes():
             peso_ponderado(1, lecturaPIC[1]),
             peso_ponderado(2, lecturaPIC[2]),
             peso_ponderado(3, lecturaPIC[3]))
-        if activar_fuente(arregloFuentes,
+        fuente = activar_fuente(arregloFuentes,
                           lecturaPIC[0],
                           lecturaPIC[1],
-                          lecturaPIC[3]) == 0:
-            if cargarAuto:
-                io_bateria(1)
-        else:
-            io_bateria(0)
+                          lecturaPIC[2],
+                          lecturaPIC[3])
+        time.sleep(50)
+
+
+def obtener_datos():
+    envioDB = True
+    while envioDB:
+        for mensaje in MENSAJE_PIC:
+            while intercambio_datos_PIC(mensaje) == False:
+                intercambio_datos_PIC(mensaje)
+        guardar_datos_db()
         time.sleep(60)
 
 
@@ -109,10 +118,8 @@ def estado_cargas():
     """
     global cargarAuto
     global cargarBateria
-    global envioDB
     cargarAuto = cargaAuto()
-    cargarBateria = not cargarAuto  # Reemplazar con función de ¿Cargar bateria?
-    envioDB = cargarAuto and cargarBateria
+    cargarBateria = not cargarAuto
     time.sleep(10)
 
 
@@ -124,73 +131,86 @@ def principal():
         # Variables globales para control de hilos
         global continuarEntradas
         global alimentacion
+        global envioDB
+        global fuente
         inicio_serial = True
+        # Inicio de programa controlado por una buena cominucación serial
         while inicio_serial:
             envio_valores(conSerial, "HI")
             if convertidor_serial(leer_valores(conSerial)) == "OK":
                 inicio_serial = False
-
+        # Inicio de Hilo para guardar los datos leidos en la base de datos
+        hiloEnvioDatosBD = thr.Thread(target=obtener_datos)
+        hiloEnvioDatosBD.setDaemon()
+        hiloEnvioDatosBD.start()
+        io_bateria(0)
+        io_inversor(0)
+        io_carga(0)
+        PWM = iniciar_pwm(1000,0)
+        
         while True:
-
-            if cargarAuto:
-                io_inversor(1)
-                alimentacion = False
-                time.sleep(60)
-                hiloPasoFuente = thr.Thread(target=paso_fuentes)
-                hiloPasoFuente.setDaemon()
-                hiloPasoFuente.start()
+            if cargarAuto == True and cargarBateria == False:
+                io_carga(0)
                 io_bateria(0)
-                while cargarAuto:
-                    for mensaje in MENSAJE_PIC:
-                        while intercambio_datos_PIC(mensaje) == False:
-                            intercambio_datos_PIC(mensaje)
-                    guardar_datos_db()
-
-            elif cargarBateria:
-                io_inversor(0)
-                io_bateria(1)
                 alimentacion = False
                 time.sleep(60)
                 hiloPasoFuente = thr.Thread(target=paso_fuentes)
                 hiloPasoFuente.setDaemon()
                 hiloPasoFuente.start()
-                while cargarBateria and cargarAuto == False:
-                    for mensaje in MENSAJE_PIC:
-                        while intercambio_datos_PIC(mensaje) == False:
-                            intercambio_datos_PIC(mensaje)
-                    guardar_datos_db()
-                    pwmBateria = iniciar_pwm(1000, 100)
-                    if float(lecturaPIC[2]) >= BATERIA_CARGADA:
-                        parar_pwm(pwmBateria)
-                        cargarBateria = False
+                actualizar_dc(PWM, 0)
+                if fuente < 2: #Se carga con aerogenerador o panel solar
+                    io_inversor(1)
+                elif fuente == 2: # Se carga con bateria
+                    actualizar_dc(PWM, 100)
+                    io_inversor(1)
                     io_bateria(1)
-
-            elif cargarBateria == False and cargarAuto == False:
-                envioDB = True
+                elif fuente == 3: # Se carga con energia de CFE
+                    actualizar_dc(PWM, 100)
+                    io_inversor(0)
+                    io_bateria(0) 
+            elif cargarBateria == True and cargarAuto == False:
                 io_bateria(0)
                 io_inversor(0)
                 alimentacion = False
-                while envioDB:
-                    for mensaje in MENSAJE_PIC:
-                        while intercambio_datos_PIC(mensaje) == False:
-                            intercambio_datos_PIC(mensaje)
-                    guardar_datos_db()
-                    envioDB = cargarAuto and cargarBateria
-
+                time.sleep(60)
+                hiloPasoFuente = thr.Thread(target=paso_fuentes)
+                hiloPasoFuente.setDaemon()
+                hiloPasoFuente.start()
+                if fuente >2: # Solo se carga con panel solar o aerogenerado
+                    actualizar_dc(PWM, 0)
+                    if float(lecturaPIC[2]) >= BATERIA_CARGADA: # 
+                        io_carga(0)
+                        cargarBateria = False
+                    else:
+                        io_inversor(0)
+                        io_bateria(0)
+                        io_carga(1)
+                    
+            elif cargarBateria == False and cargarAuto == False:
+                alimentacion = False
+                time.sleep(60)
+                actualizar_dc(PWM, 100)
+                io_bateria(0)
+                io_inversor(0)
+                io_carga(0)
+            
     except Exception as error:
         print(error)
 
     finally:
         cerrar_conexion_serial(conSerial)
-        continuarEntradas = apagar_fuentes()
+        apagar_fuentes()
         cargarAuto = False
         cargarBateria = False
         alimentacion = False
-        parar_pwm(pwmBateria)
         envioDB = False
+        parar_pwm(PWM)
+        time.sleep(65)
+        
 
 
 hiloPrincipal = thr.Thread(target=principal)
 io_bateria(0)
 io_inversor(0)
+io_carga(0)
 hiloPrincipal.start()

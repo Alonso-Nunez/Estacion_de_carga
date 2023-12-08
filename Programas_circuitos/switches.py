@@ -38,7 +38,7 @@ def io_bateria(instruccion):
         print("Instrucción no encontrada")
 
 
-def oi_carga(instruccion):
+def io_carga(instruccion):
     """
     Función que enciende o apaga el switch de la carga de la batería
 

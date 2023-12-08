@@ -18,5 +18,6 @@ def cargaAuto():
 '''
 while True:
     auto = cargaAuto()
+    print(auto)
     time.sleep(5)
 '''

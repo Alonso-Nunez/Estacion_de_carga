@@ -1,4 +1,5 @@
 import RPi.GPIO as GPIO
+import switches as sw
 # import time
 
 
@@ -104,7 +105,7 @@ def acomodo_ponderado(ponderadoPanel, ponderadoAero, ponderadoBateria, ponderado
     return arreglo
 
 
-def activar_fuente(arreglo, pP, pA, pC):
+def activar_fuente(arreglo, pP, pA, pB, pC):
     """
     Funcion que activa el paso de corriente de la fuente seleccionada
 
@@ -112,18 +113,35 @@ def activar_fuente(arreglo, pP, pA, pC):
         arreglo (array): arreglo con los valores de los pesos ponderados ordenados
         pP (float): Valor ponderado de la lectura del Panel Solar
         pA (float): Valor ponderado de la lectura del Aerogenerador
+        pB (float): Valor ponderado de la lectura de la Bateria
         pC (float): Valor ponderado de la lectura de CFE
     """
     if arreglo[0] == float(pP):
+        pasa_aero(0)
+        pasa_cfe(0)
         pasa_panel(1)
+        return 0
     elif arreglo[0] == float(pA):
+        pasa_panel(0)
+        pasa_aero(0)
         pasa_aero(1)
+        return 1
+    elif arreglo[0] == float(pB):
+        pasa_aero(0)
+        pasa_panel(0)
+        pasa_cfe(0)
+        return 2
     elif arreglo[0] == float(pC):
+        pasa_panel(0)
+        pasa_aero(0)
         pasa_cfe(1)
+        return 3
     else:
         pasa_cfe(0)
         pasa_aero(0)
         pasa_panel(0)
+        sw.io_bateria(0)
+        return 10
 
 
 def apagar_fuentes():
@@ -136,7 +154,7 @@ def apagar_fuentes():
     pasa_cfe(0)
     pasa_aero(0)
     pasa_panel(0)
-    return False
+    sw.io_bateria(0)
 
 '''
 try:
@@ -152,7 +170,7 @@ try:
     print(arreglo)
     # Selector
     activar_fuente(arreglo, ponderadoPanel, ponderadoAero, ponderadoCfe)
-    '''if arreglo[0] == ponderadoPanel:
+    if arreglo[0] == ponderadoPanel:
         pasa_panel(1)
     elif arreglo[0] == ponderadoAero:
         pasa_aero(1)
@@ -162,7 +180,6 @@ try:
         pasa_cfe(0)
         pasa_aero(0)
         pasa_panel(0)
-    '''
     # pasa_panel(1)
     # pasa_aero(1)
     # pasa_cfe(1)
