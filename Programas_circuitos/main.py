@@ -13,7 +13,7 @@ GPIO.setmode(GPIO.BCM)
 # Uso switches
 GPIO.setup(5, GPIO.OUT)  # switch bateria
 GPIO.setup(6, GPIO.OUT)  # switch inversor
-GPIO.setup(13, GPIO.OUT) # switch cargar bateria
+GPIO.setup(13, GPIO.OUT)  # switch cargar bateria
 # Uso selector de fuente
 GPIO.setup(22, GPIO.OUT)  # switch CFE
 GPIO.setup(23, GPIO.OUT)  # switch Panel
@@ -96,10 +96,10 @@ def paso_fuentes():
             peso_ponderado(2, lecturaPIC[2]),
             peso_ponderado(3, lecturaPIC[3]))
         fuente = activar_fuente(arregloFuentes,
-                          lecturaPIC[0],
-                          lecturaPIC[1],
-                          lecturaPIC[2],
-                          lecturaPIC[3])
+                                lecturaPIC[0],
+                                lecturaPIC[1],
+                                lecturaPIC[2],
+                                lecturaPIC[3])
         time.sleep(50)
 
 
@@ -126,7 +126,7 @@ def estado_cargas():
 def principal():
     try:
         hiloCargas = thr.Thread(target=estado_cargas)
-        hiloCargas.setDaemon()
+        hiloCargas.setDaemon(True)
         hiloCargas.start()
         # Variables globales para control de hilos
         global continuarEntradas
@@ -141,13 +141,14 @@ def principal():
                 inicio_serial = False
         # Inicio de Hilo para guardar los datos leidos en la base de datos
         hiloEnvioDatosBD = thr.Thread(target=obtener_datos)
-        hiloEnvioDatosBD.setDaemon()
+        hiloEnvioDatosBD.setDaemon(True)
         hiloEnvioDatosBD.start()
         io_bateria(0)
         io_inversor(0)
         io_carga(0)
-        PWM = iniciar_pwm(1000,0)
-        
+        global power
+        power = iniciar_pwm(1000, 0)
+
         while True:
             if cargarAuto == True and cargarBateria == False:
                 io_carga(0)
@@ -155,45 +156,45 @@ def principal():
                 alimentacion = False
                 time.sleep(60)
                 hiloPasoFuente = thr.Thread(target=paso_fuentes)
-                hiloPasoFuente.setDaemon()
+                hiloPasoFuente.setDaemon(True)
                 hiloPasoFuente.start()
-                actualizar_dc(PWM, 0)
-                if fuente < 2: #Se carga con aerogenerador o panel solar
+                actualizar_dc(power, 0)
+                if fuente < 2:  # Se carga con aerogenerador o panel solar
                     io_inversor(1)
-                elif fuente == 2: # Se carga con bateria
-                    actualizar_dc(PWM, 100)
+                elif fuente == 2:  # Se carga con bateria
+                    actualizar_dc(power, 100)
                     io_inversor(1)
                     io_bateria(1)
-                elif fuente == 3: # Se carga con energia de CFE
-                    actualizar_dc(PWM, 100)
+                elif fuente == 3:  # Se carga con energia de CFE
+                    actualizar_dc(power, 100)
                     io_inversor(0)
-                    io_bateria(0) 
+                    io_bateria(0)
             elif cargarBateria == True and cargarAuto == False:
                 io_bateria(0)
                 io_inversor(0)
                 alimentacion = False
                 time.sleep(60)
                 hiloPasoFuente = thr.Thread(target=paso_fuentes)
-                hiloPasoFuente.setDaemon()
+                hiloPasoFuente.setDaemon(True)
                 hiloPasoFuente.start()
-                if fuente >2: # Solo se carga con panel solar o aerogenerado
-                    actualizar_dc(PWM, 0)
-                    if float(lecturaPIC[2]) >= BATERIA_CARGADA: # 
+                if fuente > 2:  # Solo se carga con panel solar o aerogenerado
+                    actualizar_dc(power, 0)
+                    if float(lecturaPIC[2]) >= BATERIA_CARGADA:
                         io_carga(0)
                         cargarBateria = False
                     else:
                         io_inversor(0)
                         io_bateria(0)
                         io_carga(1)
-                    
+
             elif cargarBateria == False and cargarAuto == False:
                 alimentacion = False
                 time.sleep(60)
-                actualizar_dc(PWM, 100)
+                actualizar_dc(power, 100)
                 io_bateria(0)
                 io_inversor(0)
                 io_carga(0)
-            
+
     except Exception as error:
         print(error)
 
@@ -204,9 +205,8 @@ def principal():
         cargarBateria = False
         alimentacion = False
         envioDB = False
-        parar_pwm(PWM)
         time.sleep(65)
-        
+        GPIO.cleanup()
 
 
 hiloPrincipal = thr.Thread(target=principal)
