@@ -155,7 +155,7 @@ try:
         cargarAuto, cargarBateria = carga(lecturaPIC[2])
         print("Estados", cargarAuto, cargarBateria)
         if cargarAuto and not cargarBateria:
-            print("Cargar Auto")
+            print("Cargar Auto?")
             # Apagado del switch de carga de la bateria
             io_carga(0)
             fuente = paso_fuentes()
@@ -179,7 +179,7 @@ try:
                 io_inversor(0)
                 io_bateria(0)
         elif cargarBateria and not cargarAuto:
-            print("Cargar Bateria")
+            print("Cargar Bateria?")
             # Apagado de switches del inversor y descarga de bateria
             io_bateria(0)
             io_inversor(0)
