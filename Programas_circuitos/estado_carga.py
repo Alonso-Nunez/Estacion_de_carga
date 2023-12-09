@@ -17,9 +17,8 @@ def carga(voltaje_bateria):
             return False, True
         else:
             return False, False
-        return True, False
     else:
-        return False, False
+        return True, False
 
 
 '''
