@@ -1,5 +1,6 @@
 import time
 import serial
+from convertidor_senial import *
 
 SERIAL_PORT = "/dev/ttyS0"
 BYTES_LECTURA = 2
@@ -44,7 +45,7 @@ def leer_valores(conexion):
     Returns:
         leectura (byte): bytes leidos del puerto serial
     """
-    return conexion.read(BYTES_LECTURA)
+    return conexion.read(int(BYTES_LECTURA))
 
 
 def cerrar_conexion_serial(conexion):
@@ -68,8 +69,8 @@ try:
         # lectura_i = int.from_bytes(lectura, byteorder='big')
         # print(lectura_i, type(lectura_i))
         # voltaje = float(lectura_i)*VOLTAJE_RESOLUCION
-        # print(lectura, type(lectura), len(lectura))
-        print(voltaje)
+        print(lectura, type(lectura), len(lectura))
+        print(calcular_amperaje(voltaje))
         time.sleep(0.5)
 
 except serial.SerialException as err:

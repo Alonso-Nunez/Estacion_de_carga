@@ -3,8 +3,8 @@ import math
 
 VOLTAJE_RESOLUCION = 5/1023
 VOLTAJE_DC = 12
-VOLTAJE_AC = 140
-RESOLUCION_VOLTAJE_AC = 127/14
+VOLTAJE_BATERIA = 10
+RESOLUCION_VOLTAJE_AC = 129/14.5
 AMPERAJE = 5
 TEMPERATURA = 100
 VOLTAJE_MAX = 5
@@ -50,7 +50,7 @@ def calcular_amperaje(valor):
     Returns:
         float: valor real de la medición
     """
-    return valor * AMPERAJE/VOLTAJE_MAX
+    return valor
 
 
 def calcular_temperatura(valor):
@@ -65,8 +65,20 @@ def calcular_temperatura(valor):
     return valor * TEMPERATURA
 
 
+def calcular_bateria(valor):
+    """Función que retorna el valor real de la bateria a 5V DC
+
+    Args:
+        valor (float): valor obtenido de la función de convertidor_serial()
+
+    Returns:
+        float: valor real de la medición
+    """
+    return valor * VOLTAJE_BATERIA/VOLTAJE_MAX
+
+
 def calcular_voltaje_AC(valor):
-    """Función que retorna el valor real del voltaje a 140v AC
+    """Función que retorna el valor real del voltaje a 130 V AC
 
     Args:
         valor (float): valor obtenido de la función de converidor_serial()
@@ -74,14 +86,14 @@ def calcular_voltaje_AC(valor):
     Returns:
         float: valor real de la medición
     """
-    return ((valor*4)/RAIZ_DOS) * RESOLUCION_VOLTAJE_AC
+    return ((valor*4+1.5)/RAIZ_DOS) * RESOLUCION_VOLTAJE_AC
 
 
 # TEST
 '''
 try:
     while True:
-        data = b'\xff'#bytes(input("Escribe la cadena de bytes\n"),'utf-8')
+        data = b''#bytes(input("Escribe la cadena de bytes\n"),'utf-8')
         valor = convertidor_serial(data)
         print(valor)
         if type(valor) == type("cadena"):

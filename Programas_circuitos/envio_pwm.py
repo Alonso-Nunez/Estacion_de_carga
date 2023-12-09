@@ -18,7 +18,6 @@ def iniciar_pwm(f_trabajo, dc_inicial):
     """
     pwm = GPIO.PWM(25, f_trabajo)
     pwm.start(dc_inicial)
-    print("Inicio del pwm con Duty Cycle inicial de: ", dc_inicial)
     return pwm
 
 
@@ -43,6 +42,7 @@ def actualizar_dc(pwm, dc_nuevo):
     """
     pwm.ChangeDutyCycle(int(dc_nuevo))
     print("Ducty Cycle actualizado")
+
 
 '''
 bateria_pwm = iniciar_pwm(500, 100)

@@ -25,10 +25,11 @@ def conectar_db(base_datos, bd_coleccion):
         base object:ayuda a berificar si la conexion fue exitosa
     """
     try:
-        cliente = pymongo.MongoClient(MONGO_URL, serverSelectionTimeoutMS=MONGO_TIMEOUT)
+        cliente = pymongo.MongoClient(
+            MONGO_URL, serverSelectionTimeoutMS=MONGO_TIMEOUT)
         base = cliente[base_datos]
         coleccion = base[bd_coleccion]
-        print("Conexion establecida en "+str(coleccion))
+        # print("Conexion establecida en "+str(coleccion))
         return cliente, coleccion
     except pymongo.errors.ServerSelectionTimeotError as error:
         print("Error con la conexion de la base "+error)
@@ -44,7 +45,8 @@ def desconectar_db(cliente):
         cliente (object): cliente a cerrar
     """
     cliente.close()
-    print("Conexion cerrada")
+    # print("Conexion cerrada")
+
 
 def insertar_datos(datos):
     """
@@ -64,7 +66,7 @@ def insertar_datos(datos):
     enviarDatos["I_Inversor"] = datos[6]
     enviarDatos["T_Bateria"] = datos[7]
     enviarDatos["Date"] = time.localtime()
-    print(enviarDatos)
+    # print(enviarDatos)
     try:
         conexion, coleccion = conectar_db(MONGO_BD, MONGO_COLECCION)
         coleccion.insert_one(enviarDatos)
@@ -73,6 +75,7 @@ def insertar_datos(datos):
         print("Error guardando datos " + str(error))
     finally:
         desconectar_db(conexion)
+
 
 '''arreglo = [12,12,12,140,12,3,3,45]
 insertar_datos(arreglo)'''
