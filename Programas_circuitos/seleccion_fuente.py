@@ -101,7 +101,7 @@ def acomodo_ponderado(ponderadoPanel, ponderadoAero, ponderadoBateria, ponderado
     """
     arreglo = [float(ponderadoPanel), float(ponderadoAero),
                float(ponderadoBateria), float(ponderadoCFE)]
-    print("no ordenado", arreglo)
+    # print("no ordenado", arreglo)
     arreglo.sort(reverse=True)
     return arreglo
 
@@ -117,7 +117,7 @@ def activar_fuente(arreglo, pP, pA, pB, pC):
         pB (float): Valor ponderado de la lectura de la Bateria
         pC (float): Valor ponderado de la lectura de CFE
     """
-    print(arreglo, pP, pA, pB, pC)
+    # print(arreglo, pP, pA, pB, pC)
     if arreglo[0] == float(pP):
         pasa_aero(0)
         pasa_cfe(0)

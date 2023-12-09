@@ -41,7 +41,7 @@ def intercambio_datos_PIC(mensaje, posicion):
         bool: Envio de mensaje Exitoso o no
     """
     if envio_valores(conSerial, mensaje):
-        print("Mensaje enviado: ", mensaje, posicion)
+        # print("Mensaje enviado: ", mensaje, posicion)
         if posicion == 0:
             lecturaPIC[0] = str(calcular_voltaje_DC(
                 convertidor_serial(leer_valores(conSerial))))
@@ -86,7 +86,7 @@ def paso_fuentes():
     Función que seleciona la fuente que suministra corriente al circuito de carga
     Se hace lectura cada minuto
     """
-    print("Entrando Paso de fuentes")
+    # print("Entrando Paso de fuentes")
     pP = peso_ponderado(0, lecturaPIC[0])
     pA = peso_ponderado(1, lecturaPIC[1])
     pB = peso_ponderado(2, lecturaPIC[2])
@@ -101,7 +101,7 @@ def obtener_datos():
     envioDB = True
     while envioDB:
         for mensaje in MENSAJE_PIC:
-            print("Antes de intercambio", mensaje, MENSAJE_PIC.index(mensaje))
+            # print("Antes de intercambio", mensaje, MENSAJE_PIC.index(mensaje))
             while intercambio_datos_PIC(mensaje, MENSAJE_PIC.index(mensaje)) == False:
                 print("Error al enviar ", mensaje)
                 time.sleep(0.5)
