@@ -13,7 +13,7 @@ def carga(voltaje_bateria):
         Boolean: True en caso de que se pida cargar el vehiculo
     """
     if (GPIO.input(12) == GPIO.HIGH):
-        if voltaje_bateria < 12:
+        if float(voltaje_bateria) < 12:
             return False, True
         else:
             return False, False
