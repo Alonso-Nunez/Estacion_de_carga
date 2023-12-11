@@ -167,11 +167,12 @@ try:
                 actualizar_dc(power, 0)
                 io_inversor(1)
             elif fuente == 2:  # Se carga con bateria
-                print("Se selecciono la bateria")
-                # No se permite el paso de corriente en el módulo de potencia
-                actualizar_dc(power, 100)
-                io_inversor(1)
-                io_bateria(1)
+                if float(lecturaPIC[7]<TEMPERATURA_MAX):
+                    print("Se selecciono la bateria")
+                    # No se permite el paso de corriente en el módulo de potencia
+                    actualizar_dc(power, 100)
+                    io_inversor(1)
+                    io_bateria(1)
             elif fuente == 3:  # Se carga con energia de CFE
                 print("Se selecciono CFE: ")
                 # No se permite el paso de corriente en el módulo de potencia
@@ -185,7 +186,7 @@ try:
             io_inversor(0)
             fuente = paso_fuentes()
             # Lógica de la carga de la bateria
-            if fuente < 2:  # Solo se carga con panel solar o aerogenerador
+            if fuente < 2 and float(lecturaPIC[7]<TEMPERATURA_MAX):  # Solo se carga con panel solar o aerogenerador
                 if float(lecturaPIC[2]) >= BATERIA_CARGADA:
                     print("Bateria cargada")
                     # No se permite el paso de corriente en el módulo de potencia
