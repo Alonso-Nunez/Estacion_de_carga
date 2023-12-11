@@ -74,7 +74,7 @@ def calcular_bateria(valor):
     Returns:
         float: valor real de la medición
     """
-    return valor * VOLTAJE_BATERIA/VOLTAJE_MAX
+    return valor * VOLTAJE_BATERIA/VOLTAJE_MAX * 2
 
 
 def calcular_voltaje_AC(valor):

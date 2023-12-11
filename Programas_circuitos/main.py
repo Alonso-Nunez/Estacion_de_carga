@@ -55,7 +55,7 @@ def intercambio_datos_PIC(mensaje, posicion):
             lecturaPIC[3] = str(calcular_voltaje_AC(
                 convertidor_serial(leer_valores(conSerial))))
         elif posicion == 4:
-            lecturaPIC[4] = str(calcular_voltaje_DC(
+            lecturaPIC[4] = str(calcular_bateria(
                 convertidor_serial(leer_valores(conSerial))))
         elif posicion == 5:
             lecturaPIC[5] = str(calcular_amperaje(
