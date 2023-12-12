@@ -2,7 +2,7 @@ import re
 import math
 
 VOLTAJE_RESOLUCION = 5/1023
-VOLTAJE_DC = 12
+VOLTAJE_DC = 20
 VOLTAJE_BATERIA = 12
 RESOLUCION_VOLTAJE_AC = 129/14.5
 AMPERAJE = 5
@@ -74,7 +74,7 @@ def calcular_bateria(valor):
     Returns:
         float: valor real de la medición
     """
-    return valor * VOLTAJE_BATERIA/VOLTAJE_MAX * 2
+    return valor * 3
 
 
 def calcular_voltaje_AC(valor):
