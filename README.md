@@ -4,8 +4,6 @@ Repositorio creado con el propósito de hacer el código del proyecto TT2023-B04
 
 ### Rama de la rasp
 
-En esta rama se subira el código referente al funcionamiento de la raspberry.
-
 ##### Pines de conexión:
 |Pin GPIO|Pin Físico|Uso|
 |:--:|:--:|:--:|
@@ -16,3 +14,39 @@ En esta rama se subira el código referente al funcionamiento de la raspberry.
 |23|16|Switch Panel Solar|
 |24|18|Switch Aerogenerador|
 |25|22|Pulso PWM|
+
+### Variables del entorno virtual
+
+Instruccion para crear el entorno
+
+```
+python -m venv env
+```
+
+Instruccion para activar el entorno
+
+```
+env/scripts/activate
+```
+
+Librerias a instalar
+django
+
+```
+pip install django
+```
+
+djongo
+
+```
+pip install djongo
+```
+
+Instalar env para funcion de vistas
+``` 
+pip install django-environ
+```
+Instalar pymongo paara extrare datos de MongoDB
+``` 
+pip install pymongo
+```
